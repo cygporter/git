@@ -1,0 +1,320 @@
+git
+------------------------------------------
+Git is popular version control system designed to handle very large
+projects with speed and efficiency; it is used mainly for various open
+source projects, most notably the Linux kernel.
+
+Git falls in the category of distributed source code management tools,
+similar to e.g. GNU Arch or Monotone (or BitKeeper in the commercial
+world). Every Git working directory is a full-fledged repository with
+full revision tracking capabilities, not dependent on network access or
+a central server.
+
+Runtime requirements:
+  cygwin-1.5.19-4
+  expat-1.95.8-1
+  libcurl3-7.15.1-1
+  libiconv2-1.9.2-2
+  openssl-0.9.8a-1
+  perl-5.8.7-5
+  python-2.4.3-1
+  zlib-1.2.3-1
+
+Build requirements:
+(besides corresponding -devel packages)
+  cygwin-1.5.19-4
+  asciidoc-7.1.2-1
+  binutils-20050610-1
+  cygport-0.2.0-1
+  gcc-core-3.4.4-1
+  make-3.80-1
+  sed-4.1.4-1
+
+Canonical website:
+  http://git.or.cz/
+
+Canonical download:
+  http://kernel.org/pub/software/scm/git/
+
+-------------------------------------------
+
+Build instructions:
+  unpack git-1.3.3-X-src.tar.bz2
+    if you use setup to install this src package, it will be
+	 unpacked under /usr/src automatically
+  cd /usr/src
+  cygport ./git-1.3.3-X.cygport all
+
+This will create:
+  /usr/src/git-1.3.3-X-src.tar.bz2
+  /usr/src/git-1.3.3-X.tar.bz2
+
+-------------------------------------------
+
+Files included in the binary package:
+
+  /usr/bin/git-add
+  /usr/bin/git-am
+  /usr/bin/git-annotate
+  /usr/bin/git-apply.exe
+  /usr/bin/git-applymbox
+  /usr/bin/git-applypatch
+  /usr/bin/git-archimport
+  /usr/bin/git-bisect
+  /usr/bin/git-blame.exe
+  /usr/bin/git-branch
+  /usr/bin/git-cat-file.exe
+  /usr/bin/git-check-ref-format.exe
+  /usr/bin/git-checkout
+  /usr/bin/git-checkout-index.exe
+  /usr/bin/git-cherry
+  /usr/bin/git-cherry-pick
+  /usr/bin/git-clean
+  /usr/bin/git-clone
+  /usr/bin/git-clone-pack.exe
+  /usr/bin/git-commit
+  /usr/bin/git-commit-tree.exe
+  /usr/bin/git-convert-objects.exe
+  /usr/bin/git-count-objects
+  /usr/bin/git-cvsexportcommit
+  /usr/bin/git-cvsimport
+  /usr/bin/git-cvsserver
+  /usr/bin/git-daemon.exe
+  /usr/bin/git-describe.exe
+  /usr/bin/git-diff
+  /usr/bin/git-diff-files.exe
+  /usr/bin/git-diff-index.exe
+  /usr/bin/git-diff-stages.exe
+  /usr/bin/git-diff-tree.exe
+  /usr/bin/git-fetch
+  /usr/bin/git-fetch-pack.exe
+  /usr/bin/git-fmt-merge-msg
+  /usr/bin/git-format-patch
+  /usr/bin/git-fsck-objects.exe
+  /usr/bin/git-get-tar-commit-id.exe
+  /usr/bin/git-grep
+  /usr/bin/git-hash-object.exe
+  /usr/bin/git-http-fetch.exe
+  /usr/bin/git-http-push.exe
+  /usr/bin/git-imap-send.exe
+  /usr/bin/git-index-pack.exe
+  /usr/bin/git-init-db.exe
+  /usr/bin/git-local-fetch.exe
+  /usr/bin/git-log.exe
+  /usr/bin/git-lost-found
+  /usr/bin/git-ls-files.exe
+  /usr/bin/git-ls-remote
+  /usr/bin/git-ls-tree.exe
+  /usr/bin/git-mailinfo.exe
+  /usr/bin/git-mailsplit.exe
+  /usr/bin/git-merge
+  /usr/bin/git-merge-base.exe
+  /usr/bin/git-merge-index.exe
+  /usr/bin/git-merge-octopus
+  /usr/bin/git-merge-one-file
+  /usr/bin/git-merge-ours
+  /usr/bin/git-merge-recursive
+  /usr/bin/git-merge-resolve
+  /usr/bin/git-merge-stupid
+  /usr/bin/git-merge-tree.exe
+  /usr/bin/git-mktag.exe
+  /usr/bin/git-mktree.exe
+  /usr/bin/git-mv
+  /usr/bin/git-name-rev.exe
+  /usr/bin/git-pack-objects.exe
+  /usr/bin/git-pack-redundant.exe
+  /usr/bin/git-parse-remote
+  /usr/bin/git-patch-id.exe
+  /usr/bin/git-peek-remote.exe
+  /usr/bin/git-prune
+  /usr/bin/git-prune-packed.exe
+  /usr/bin/git-pull
+  /usr/bin/git-push
+  /usr/bin/git-read-tree.exe
+  /usr/bin/git-rebase
+  /usr/bin/git-receive-pack.exe
+  /usr/bin/git-relink
+  /usr/bin/git-repack
+  /usr/bin/git-repo-config.exe
+  /usr/bin/git-request-pull
+  /usr/bin/git-rerere
+  /usr/bin/git-reset
+  /usr/bin/git-resolve
+  /usr/bin/git-rev-list.exe
+  /usr/bin/git-rev-parse.exe
+  /usr/bin/git-revert
+  /usr/bin/git-rm
+  /usr/bin/git-send-pack.exe
+  /usr/bin/git-sh-setup
+  /usr/bin/git-shell.exe
+  /usr/bin/git-shortlog
+  /usr/bin/git-show
+  /usr/bin/git-show-branch.exe
+  /usr/bin/git-show-index.exe
+  /usr/bin/git-ssh-fetch.exe
+  /usr/bin/git-ssh-pull.exe
+  /usr/bin/git-ssh-push.exe
+  /usr/bin/git-ssh-upload.exe
+  /usr/bin/git-status
+  /usr/bin/git-stripspace.exe
+  /usr/bin/git-svnimport
+  /usr/bin/git-symbolic-ref.exe
+  /usr/bin/git-tag
+  /usr/bin/git-tar-tree.exe
+  /usr/bin/git-unpack-file.exe
+  /usr/bin/git-unpack-objects.exe
+  /usr/bin/git-update-index.exe
+  /usr/bin/git-update-ref.exe
+  /usr/bin/git-update-server-info.exe
+  /usr/bin/git-upload-pack.exe
+  /usr/bin/git-var.exe
+  /usr/bin/git-verify-pack.exe
+  /usr/bin/git-verify-tag
+  /usr/bin/git-whatchanged
+  /usr/bin/git-write-tree.exe
+  /usr/bin/git.exe
+  /usr/bin/gitk
+  /usr/share/doc/Cygwin/git-1.3.3.README
+  /usr/share/doc/git-1.3.3/COPYING
+  /usr/share/doc/git-1.3.3/INSTALL
+  /usr/share/doc/git-1.3.3/README
+  /usr/share/git-core/python/gitMergeCommon.py
+  /usr/share/git-core/templates/description
+  /usr/share/git-core/templates/hooks/applypatch-msg
+  /usr/share/git-core/templates/hooks/commit-msg
+  /usr/share/git-core/templates/hooks/post-commit
+  /usr/share/git-core/templates/hooks/post-update
+  /usr/share/git-core/templates/hooks/pre-applypatch
+  /usr/share/git-core/templates/hooks/pre-commit
+  /usr/share/git-core/templates/hooks/pre-rebase
+  /usr/share/git-core/templates/hooks/update
+  /usr/share/git-core/templates/info/exclude
+  /usr/share/man/man1/git-add.1.gz
+  /usr/share/man/man1/git-am.1.gz
+  /usr/share/man/man1/git-annotate.1.gz
+  /usr/share/man/man1/git-apply.1.gz
+  /usr/share/man/man1/git-applymbox.1.gz
+  /usr/share/man/man1/git-applypatch.1.gz
+  /usr/share/man/man1/git-archimport.1.gz
+  /usr/share/man/man1/git-bisect.1.gz
+  /usr/share/man/man1/git-blame.1.gz
+  /usr/share/man/man1/git-branch.1.gz
+  /usr/share/man/man1/git-cat-file.1.gz
+  /usr/share/man/man1/git-check-ref-format.1.gz
+  /usr/share/man/man1/git-checkout-index.1.gz
+  /usr/share/man/man1/git-checkout.1.gz
+  /usr/share/man/man1/git-cherry-pick.1.gz
+  /usr/share/man/man1/git-cherry.1.gz
+  /usr/share/man/man1/git-clean.1.gz
+  /usr/share/man/man1/git-clone-pack.1.gz
+  /usr/share/man/man1/git-clone.1.gz
+  /usr/share/man/man1/git-commit-tree.1.gz
+  /usr/share/man/man1/git-commit.1.gz
+  /usr/share/man/man1/git-convert-objects.1.gz
+  /usr/share/man/man1/git-count-objects.1.gz
+  /usr/share/man/man1/git-cvsexportcommit.1.gz
+  /usr/share/man/man1/git-cvsimport.1.gz
+  /usr/share/man/man1/git-cvsserver.1.gz
+  /usr/share/man/man1/git-daemon.1.gz
+  /usr/share/man/man1/git-describe.1.gz
+  /usr/share/man/man1/git-diff-files.1.gz
+  /usr/share/man/man1/git-diff-index.1.gz
+  /usr/share/man/man1/git-diff-stages.1.gz
+  /usr/share/man/man1/git-diff-tree.1.gz
+  /usr/share/man/man1/git-diff.1.gz
+  /usr/share/man/man1/git-fetch-pack.1.gz
+  /usr/share/man/man1/git-fetch.1.gz
+  /usr/share/man/man1/git-fmt-merge-msg.1.gz
+  /usr/share/man/man1/git-format-patch.1.gz
+  /usr/share/man/man1/git-fsck-objects.1.gz
+  /usr/share/man/man1/git-get-tar-commit-id.1.gz
+  /usr/share/man/man1/git-grep.1.gz
+  /usr/share/man/man1/git-hash-object.1.gz
+  /usr/share/man/man1/git-http-fetch.1.gz
+  /usr/share/man/man1/git-http-push.1.gz
+  /usr/share/man/man1/git-imap-send.1.gz
+  /usr/share/man/man1/git-index-pack.1.gz
+  /usr/share/man/man1/git-init-db.1.gz
+  /usr/share/man/man1/git-local-fetch.1.gz
+  /usr/share/man/man1/git-log.1.gz
+  /usr/share/man/man1/git-lost-found.1.gz
+  /usr/share/man/man1/git-ls-files.1.gz
+  /usr/share/man/man1/git-ls-remote.1.gz
+  /usr/share/man/man1/git-ls-tree.1.gz
+  /usr/share/man/man1/git-mailinfo.1.gz
+  /usr/share/man/man1/git-mailsplit.1.gz
+  /usr/share/man/man1/git-merge-base.1.gz
+  /usr/share/man/man1/git-merge-index.1.gz
+  /usr/share/man/man1/git-merge-one-file.1.gz
+  /usr/share/man/man1/git-merge-tree.1.gz
+  /usr/share/man/man1/git-merge.1.gz
+  /usr/share/man/man1/git-mktag.1.gz
+  /usr/share/man/man1/git-mktree.1.gz
+  /usr/share/man/man1/git-mv.1.gz
+  /usr/share/man/man1/git-name-rev.1.gz
+  /usr/share/man/man1/git-pack-objects.1.gz
+  /usr/share/man/man1/git-pack-redundant.1.gz
+  /usr/share/man/man1/git-parse-remote.1.gz
+  /usr/share/man/man1/git-patch-id.1.gz
+  /usr/share/man/man1/git-peek-remote.1.gz
+  /usr/share/man/man1/git-prune-packed.1.gz
+  /usr/share/man/man1/git-prune.1.gz
+  /usr/share/man/man1/git-pull.1.gz
+  /usr/share/man/man1/git-push.1.gz
+  /usr/share/man/man1/git-read-tree.1.gz
+  /usr/share/man/man1/git-rebase.1.gz
+  /usr/share/man/man1/git-receive-pack.1.gz
+  /usr/share/man/man1/git-relink.1.gz
+  /usr/share/man/man1/git-repack.1.gz
+  /usr/share/man/man1/git-repo-config.1.gz
+  /usr/share/man/man1/git-request-pull.1.gz
+  /usr/share/man/man1/git-rerere.1.gz
+  /usr/share/man/man1/git-reset.1.gz
+  /usr/share/man/man1/git-resolve.1.gz
+  /usr/share/man/man1/git-rev-list.1.gz
+  /usr/share/man/man1/git-rev-parse.1.gz
+  /usr/share/man/man1/git-revert.1.gz
+  /usr/share/man/man1/git-rm.1.gz
+  /usr/share/man/man1/git-send-email.1.gz
+  /usr/share/man/man1/git-send-pack.1.gz
+  /usr/share/man/man1/git-sh-setup.1.gz
+  /usr/share/man/man1/git-shell.1.gz
+  /usr/share/man/man1/git-shortlog.1.gz
+  /usr/share/man/man1/git-show-branch.1.gz
+  /usr/share/man/man1/git-show-index.1.gz
+  /usr/share/man/man1/git-show.1.gz
+  /usr/share/man/man1/git-ssh-fetch.1.gz
+  /usr/share/man/man1/git-ssh-upload.1.gz
+  /usr/share/man/man1/git-status.1.gz
+  /usr/share/man/man1/git-stripspace.1.gz
+  /usr/share/man/man1/git-svnimport.1.gz
+  /usr/share/man/man1/git-symbolic-ref.1.gz
+  /usr/share/man/man1/git-tag.1.gz
+  /usr/share/man/man1/git-tar-tree.1.gz
+  /usr/share/man/man1/git-unpack-file.1.gz
+  /usr/share/man/man1/git-unpack-objects.1.gz
+  /usr/share/man/man1/git-update-index.1.gz
+  /usr/share/man/man1/git-update-ref.1.gz
+  /usr/share/man/man1/git-update-server-info.1.gz
+  /usr/share/man/man1/git-upload-pack.1.gz
+  /usr/share/man/man1/git-var.1.gz
+  /usr/share/man/man1/git-verify-pack.1.gz
+  /usr/share/man/man1/git-verify-tag.1.gz
+  /usr/share/man/man1/git-whatchanged.1.gz
+  /usr/share/man/man1/git-write-tree.1.gz
+  /usr/share/man/man1/gitk.1.gz
+  /usr/share/man/man7/git.7.gz
+
+------------------
+
+Port Notes:
+
+----- version 1.3.3-1 -----
+Version bump.
+
+----- version 1.3.2-1 -----
+Initial release for Cygwin.
+
+
+Cygwin port maintained by:
+http://cygwinports.dotsrc.org/
