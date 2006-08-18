@@ -11,7 +11,7 @@ full revision tracking capabilities, not dependent on network access or
 a central server.
 
 Runtime requirements:
-  cygwin-1.5.20-1
+  cygwin-1.5.21-1
   expat-1.95.8-1
   libcurl3-7.15.4-1
   libiconv2-1.9.2-2
@@ -22,12 +22,12 @@ Runtime requirements:
 
 Build requirements:
 (besides corresponding -devel packages)
-  cygwin-1.5.20-1
+  cygwin-1.5.21-1
   asciidoc-7.1.2-1
-  binutils-20050610-1
-  cygport-0.2.2-1
+  binutils-20060709-1
+  cygport-0.2.5-1
   gcc-core-3.4.4-1
-  make-3.80-1
+  make-3.81-1
   sed-4.1.5-1
 
 Canonical website:
@@ -39,15 +39,15 @@ Canonical download:
 -------------------------------------------
 
 Build instructions:
-  unpack git-1.4.1-X-src.tar.bz2
+  unpack git-1.4.1.1-X-src.tar.bz2
     if you use setup to install this src package, it will be
 	 unpacked under /usr/src automatically
   cd /usr/src
-  cygport ./git-1.4.1-X.cygport all
+  cygport ./git-1.4.1.1-X.cygport all
 
 This will create:
-  /usr/src/git-1.4.1-X-src.tar.bz2
-  /usr/src/git-1.4.1-X.tar.bz2
+  /usr/src/git-1.4.1.1-X-src.tar.bz2
+  /usr/src/git-1.4.1.1-X.tar.bz2
 
 -------------------------------------------
 
@@ -176,10 +176,10 @@ Files included in the binary package:
   /usr/bin/git-write-tree.exe
   /usr/bin/git.exe
   /usr/bin/gitk
-  /usr/share/doc/Cygwin/git-1.4.1.README
-  /usr/share/doc/git-1.4.1/COPYING
-  /usr/share/doc/git-1.4.1/INSTALL
-  /usr/share/doc/git-1.4.1/README
+  /usr/share/doc/Cygwin/git-1.4.1.1.README
+  /usr/share/doc/git-1.4.1.1/COPYING
+  /usr/share/doc/git-1.4.1.1/INSTALL
+  /usr/share/doc/git-1.4.1.1/README
   /usr/share/man/man1/git-add.1.gz
   /usr/share/man/man1/git-am.1.gz
   /usr/share/man/man1/git-annotate.1.gz
@@ -301,6 +301,10 @@ Files included in the binary package:
 ------------------
 
 Port Notes:
+
+----- version 1.4.1.1-1 -----
+Version bump.
+Fixed problem with hard-coding of DESTDIR into binaries.
 
 ----- version 1.4.1-1 -----
 Version bump.

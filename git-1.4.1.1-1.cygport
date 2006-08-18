@@ -1,0 +1,19 @@
+DESCRIPTION="Git Version Control system"
+HOMEPAGE="http://git.or.cz/"
+SRC_URI="http://kernel.org/pub/software/scm/${PN}/${P}.tar.bz2"
+
+MAKEOPTS+=' -j1'
+
+src_compile() {
+	lndirs
+	rm -f ${B}/Documentation/*.txt
+	cp ${S}/Documentation/*.txt ${B}/Documentation
+
+	cd ${B}
+	cygmake prefix=/usr all doc
+}
+
+src_install() {
+	cd ${B}
+	cyginstall prefix=/usr mandir=/usr/share/man install-doc
+}
