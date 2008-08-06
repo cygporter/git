@@ -1,4 +1,3 @@
-diff -urN -x CYGWIN-PATCHES -x 'aclocal.m4*' -x ltmain.sh -x 'config.*' -x depcomp -x install-sh -x missing -x mkinstalldirs -x autom4te.cache -x '*compile' -x Makefile.in.in -x 'intltool*.in' -x 'xml-i18n-*.in' -x '*.pyc' -x '*.mo' -x '*.gmo' -x ABOUT-NLS -x Makevars.template -x COPYING -x INSTALL -x '*.orig' -x '*.rej' -x '*~' -x '*.temp' -x texinfo.tex -x ylwrap -x gnome-doc-utils.make -x intltool.m4 -x omf.make -x xmldocs.make origsrc/git-1.4.1.1/Makefile src/git-1.4.1.1/Makefile
 --- origsrc/git-1.4.1.1/Makefile	2006-07-24 22:45:08.000000000 -0500
 +++ src/git-1.4.1.1/Makefile	2006-08-17 16:16:28.098625000 -0500
 @@ -281,7 +281,6 @@
