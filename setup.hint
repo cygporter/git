@@ -1,5 +1,5 @@
 category: Devel
-requires: bash expat libcurl3 libiconv2 openssl perl python zlib
+requires: bash expat libcurl3 libiconv2 libopenssl098 perl python zlib
 sdesc: "Distributed source code management tools"
 ldesc: "Git is popular version control system designed to handle very
 large projects with speed and efficiency; it is used mainly for various
