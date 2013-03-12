@@ -1,0 +1,42 @@
+--- origsrc/git-1.7.9/Makefile	2012-01-27 13:51:04.000000000 -0700
++++ src/git-1.7.9/Makefile	2012-02-11 11:56:20.765625000 -0700
+@@ -989,14 +989,14 @@ ifeq ($(uname_O),Cygwin)
+ 	endif
+ 	NEEDS_LIBICONV = YesPlease
+ 	NO_FAST_WORKING_DIRECTORY = UnfortunatelyYes
+-	NO_TRUSTABLE_FILEMODE = UnfortunatelyYes
++#	NO_TRUSTABLE_FILEMODE = UnfortunatelyYes
+ 	NO_ST_BLOCKS_IN_STRUCT_STAT = YesPlease
+ 	# There are conflicting reports about this.
+ 	# On some boxes NO_MMAP is needed, and not so elsewhere.
+ 	# Try commenting this out if you suspect MMAP is more efficient
+-	NO_MMAP = YesPlease
++#	NO_MMAP = YesPlease
+ 	X = .exe
+-	COMPAT_OBJS += compat/cygwin.o
++#	COMPAT_OBJS += compat/cygwin.o
+ 	UNRELIABLE_FSTAT = UnfortunatelyYes
+ 	SPARSE_FLAGS = -isystem /usr/include/w32api -Wno-one-bit-signed-bitfield
+ endif
+--- origsrc/git-1.7.9/git-compat-util.h	2012-01-27 14:51:04.000000000 -0600
++++ src/git-1.7.9/git-compat-util.h	2013-03-11 23:06:02.805658300 -0500
+@@ -141,7 +141,7 @@
+ #else
+ #include <stdint.h>
+ #endif
+-#if defined(__CYGWIN__)
++#if 0 // defined(__CYGWIN__)
+ #undef _XOPEN_SOURCE
+ #include <grp.h>
+ #define _XOPEN_SOURCE 600
+--- origsrc/git-1.7.9/git-gui/Makefile	2012-01-27 13:51:04.000000000 -0700
++++ src/git-1.7.9/git-gui/Makefile	2012-02-11 12:07:50.890625000 -0700
+@@ -136,7 +136,7 @@ GITGUI_SCRIPT   := $$0
+ GITGUI_RELATIVE :=
+ GITGUI_MACOSXAPP :=
+ 
+-ifeq ($(uname_O),Cygwin)
++ifeq ($(uname_O),noThanks)
+ 	GITGUI_SCRIPT := `cygpath --windows --absolute "$(GITGUI_SCRIPT)"`
+ 
+ 	# Is this a Cygwin Tcl/Tk binary?  If so it knows how to do

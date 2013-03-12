@@ -1,0 +1,83 @@
+# git.cygport - directions for packaging git for cygwin
+
+# Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Eric Blake
+# This file is free software; I give unlimited permission to copy and/or
+# distribute it, with or without modifications, as long as this notice is
+# preserved.
+
+inherit perl python
+
+NAME="git"
+VERSION=1.7.9
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="Distributed version control system"
+DESCRIPTION="Git is a free and open source distributed version control system
+designed to handle everything from small to very large projects with speed and
+efficiency. Git is easy to learn and has a tiny footprint with lightning fast
+performance. It outclasses SCM tools like Subversion, CVS, Perforce, and
+ClearCase with features like cheap local branching, convenient staging areas,
+and multiple workflows."
+HOMEPAGE="http://git-scm.com/"
+SRC_URI="https://git-core.googlecode.com/files/git-${VERSION}.tar.gz"
+SRC_DIR="git-${VERSION}"
+PATCH_URI="1.7.9-cygwin.patch"
+
+PKG_NAMES="git gitk git-completion git-cvs git-email git-gui git-svn"
+git_REQUIRES="less openssh rsync"
+git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
+	--exclude=git-gui* --exclude=git-svn*
+	usr/bin/ usr/lib/git-core/ ${PERL_VENDORLIB#/} ${PYTHON_SITELIB#/} usr/share/"
+gitk_SUMMARY="Git repository browser"
+gitk_REQUIRES="git"
+gitk_CONTENTS="usr/bin/gitk usr/share/gitk usr/share/man/man1/gitk.1*"
+git_completion_SUMMARY="Bash completion for Git version control system"
+git_completion_REQUIRES="bash bash-completion git"
+git_completion_CONTENTS="etc/bash_completion.d/"
+git_cvs_SUMMARY="CVS compatibilty support for Git version control system"
+git_cvs_REQUIRES="cvsps perl-DBD-SQLite"
+git_cvs_CONTENTS="usr/bin/git-cvs* usr/lib/git-core/git-cvs* usr/share/man/man1/git-cvs*"
+git_email_SUMMARY="Email tools for Git version control system"
+git_email_CONTENTS="usr/lib/git-core/git-*email* usr/share/man/man1/git-*email*"
+git_gui_SUMMARY="Graphical interface for Git version control system"
+git_gui_REQUIRES="git gitk"
+git_gui_CONTENTS="usr/lib/git-core/git-gui* usr/share/git-gui/ usr/share/man/man1/git-gui.1*"
+git_svn_SUMMARY="Subversion compatibility support for Git version control system"
+git_svn_CONTENTS="usr/lib/git-core/git-svn usr/share/man/man1/git-svn.1*"
+
+MAKEOPTS+=" ASCIIDOC8=yes INSTALLDIRS=vendor"
+DIFF_EXCLUDES='GIT-VERSION-FILE'
+
+src_compile() {
+	# the configure script is not distributed, and VPATH builds aren't supported
+	cd ${S}
+	cygmake configure
+	lndirs
+	cd ${B}
+	# tcl doesn't know how to see symlinks in globs
+#	for f in `find -name '*.tcl'`
+#	do
+#		test -z "$(readlink $f)" && continue
+#		ln -f "$(readlink $f)" $f
+#	done
+	cygconf --mandir=/usr/share/man
+	cygmake all doc
+}
+
+src_install() {
+	cd ${B}
+	cyginstall install-doc
+
+	# avoid clash with perl pod list
+	perl_postinst
+
+	# ship bash completion
+	insinto /etc/bash_completion.d
+  	newins ${S}/contrib/completion/git-completion.bash git
+}
+
+# Local Variables:
+# fill-column: 72
+# mode: sh
+# sh-indentation: 2
+# End:
