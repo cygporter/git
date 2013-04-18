@@ -24,7 +24,7 @@ SRC_DIR="git-${VERSION}"
 PATCH_URI="1.7.9-cygwin.patch"
 
 PKG_NAMES="git gitk git-completion git-cvs git-email git-gui git-svn"
-git_REQUIRES="less openssh rsync"
+git_REQUIRES="ca-certificates less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
 	--exclude=git-gui* --exclude=git-svn*
 	usr/bin/ usr/lib/git-core/ ${PERL_VENDORLIB#/} ${PYTHON_SITELIB#/} usr/share/"
