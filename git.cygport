@@ -8,7 +8,7 @@
 inherit perl python
 
 NAME="git"
-VERSION=1.7.9
+VERSION=1.8.3
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="Distributed version control system"
@@ -21,32 +21,46 @@ and multiple workflows."
 HOMEPAGE="http://git-scm.com/"
 SRC_URI="https://git-core.googlecode.com/files/git-${VERSION}.tar.gz"
 SRC_DIR="git-${VERSION}"
-PATCH_URI="1.7.9-cygwin.patch"
+PATCH_URI="
+	1.7.9-cygwin.patch
+	1.8.3-web-cygstart.patch
+"
 
-PKG_NAMES="git gitk git-completion git-cvs git-email git-gui git-svn"
-git_REQUIRES="ca-certificates less openssh rsync"
+PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
+git_REQUIRES="cygutils less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
-	--exclude=git-gui* --exclude=git-svn*
+	--exclude=git-gui* --exclude=git-svn* --exclude=SVN* --exclude=Git.SVN.*
+	--exclude=git-instaweb* --exclude=gitweb*
 	usr/bin/ usr/lib/git-core/ ${PERL_VENDORLIB#/} ${PYTHON_SITELIB#/} usr/share/"
 gitk_SUMMARY="Git repository browser"
 gitk_REQUIRES="git"
-gitk_CONTENTS="usr/bin/gitk usr/share/gitk usr/share/man/man1/gitk.1*"
+gitk_CONTENTS="usr/bin/gitk usr/share/doc/git/html/gitk* usr/share/gitk
+	usr/share/man/man1/gitk.1*"
+gitweb_SUMMARY="Web interface for Git version control system"
+gitweb_REQUIRES="git lighttpd"
+gitweb_CONTENTS="usr/lib/git-core/git-instaweb* usr/share/doc/git/html/*[^-]web*
+	usr/share/gitweb/ usr/share/man/man1/*[^-]web* usr/share/man/man5/gitweb*"
 git_completion_SUMMARY="Bash completion for Git version control system"
 git_completion_REQUIRES="bash bash-completion git"
 git_completion_CONTENTS="etc/bash_completion.d/"
 git_cvs_SUMMARY="CVS compatibilty support for Git version control system"
 git_cvs_REQUIRES="cvsps perl-DBD-SQLite"
-git_cvs_CONTENTS="usr/bin/git-cvs* usr/lib/git-core/git-cvs* usr/share/man/man1/git-cvs*"
+git_cvs_CONTENTS="usr/bin/git-cvs* usr/lib/git-core/git-cvs*
+	usr/share/doc/git/html/git-cvs* usr/share/man/man1/git-cvs*"
 git_email_SUMMARY="Email tools for Git version control system"
-git_email_CONTENTS="usr/lib/git-core/git-*email* usr/share/man/man1/git-*email*"
+git_email_CONTENTS="usr/lib/git-core/git-*email*
+	usr/share/doc/git/html/git-*email* usr/share/man/man1/git-*email*"
 git_gui_SUMMARY="Graphical interface for Git version control system"
 git_gui_REQUIRES="git gitk"
-git_gui_CONTENTS="usr/lib/git-core/git-gui* usr/share/git-gui/ usr/share/man/man1/git-gui.1*"
+git_gui_CONTENTS="usr/lib/git-core/git-gui* usr/share/doc/git/html/git-gui*
+	usr/share/git-gui/ usr/share/man/man1/git-gui.1*"
 git_svn_SUMMARY="Subversion compatibility support for Git version control system"
-git_svn_CONTENTS="usr/lib/git-core/git-svn usr/share/man/man1/git-svn.1*"
+git_svn_CONTENTS="usr/lib/git-core/git-svn ${PERL_VENDORLIB#/}/Git/SVN*
+	usr/share/doc/git/html/git-svn* usr/share/man/man1/git-svn.1*
+	usr/share/man/man3/Git.SVN.*"
 
 MAKEOPTS+=" ASCIIDOC8=yes INSTALLDIRS=vendor"
-DIFF_EXCLUDES='GIT-VERSION-FILE'
+DIFF_EXCLUDES='configure GIT-VERSION-FILE'
 
 src_compile() {
 	# the configure script is not distributed, and VPATH builds aren't supported
@@ -54,19 +68,17 @@ src_compile() {
 	cygmake configure
 	lndirs
 	cd ${B}
-	# tcl doesn't know how to see symlinks in globs
-#	for f in `find -name '*.tcl'`
-#	do
-#		test -z "$(readlink $f)" && continue
-#		ln -f "$(readlink $f)" $f
-#	done
-	cygconf --mandir=/usr/share/man
-	cygmake all doc
+	cygconf --htmldir=/usr/share/doc/git/html --mandir=/usr/share/man
+	cygmake all
+	cygmake html
+	cygmake man
+	cygmake info
+	cygmake pdf
 }
 
 src_install() {
 	cd ${B}
-	cyginstall install-doc
+	cyginstall install-html install-man install-info install-pdf pdfdir=/usr/share/doc/git
 
 	# avoid clash with perl pod list
 	perl_postinst
