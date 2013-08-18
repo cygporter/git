@@ -23,7 +23,6 @@ SRC_URI="https://git-core.googlecode.com/files/git-${VERSION}.tar.gz"
 SRC_DIR="git-${VERSION}"
 PATCH_URI="
 	1.7.9-cygwin.patch
-	1.8.3-web-cygstart.patch
 "
 
 PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
