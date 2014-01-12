@@ -19,8 +19,12 @@ performance. It outclasses SCM tools like Subversion, CVS, Perforce, and
 ClearCase with features like cheap local branching, convenient staging areas,
 and multiple workflows."
 HOMEPAGE="http://git-scm.com/"
-SRC_URI="https://git-core.googlecode.com/files/git-${VERSION}.tar.gz"
 SRC_DIR="git-${VERSION}"
+
+GIT_URI="git://git.kernel.org/pub/scm/git/git.git"
+GIT_TAG="v${VERSION}"
+inherit git
+
 PATCH_URI="
 	1.8.5.2-cygwin.patch
 "
