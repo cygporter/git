@@ -1,2 +1,4 @@
 /git-*.tar.gz
+/git-*.tar.bz2
 /git-*/
+/git/
