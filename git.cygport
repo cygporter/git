@@ -97,7 +97,7 @@ src_install() {
 
 	# ship bash completion
 	insinto /etc/bash_completion.d
-  	newins ${S}/contrib/completion/git-completion.bash git
+	newins ${S}/contrib/completion/git-completion.bash git
 }
 
 # Local Variables:
