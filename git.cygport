@@ -29,6 +29,18 @@ PATCH_URI="
 	1.8.5.2-cygwin.patch
 "
 
+DEPEND="
+	asciidoc
+	docbook-xml45
+	docbook2X
+	gcc-core
+	gettext-devel
+	libcurl-devel
+	libexpat-devel
+	openssl-devel
+	xmlto
+"
+
 PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
 git_REQUIRES="cygutils less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
