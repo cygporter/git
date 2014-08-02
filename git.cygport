@@ -37,9 +37,12 @@ DEPEND="
 	gettext-devel
 	libcurl-devel
 	libexpat-devel
+	libiconv-devel
 	openssl-devel
 	xmlto
 "
+
+[[ $ARCH_x86_64 ]] && DEPEND="$DEPEND libiconv-devel"
 
 PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
 git_REQUIRES="cygutils less openssh rsync"
