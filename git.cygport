@@ -42,7 +42,7 @@ DEPEND="
 	xmlto
 "
 
-[[ $ARCH_x86_64 ]] && DEPEND="$DEPEND libiconv-devel"
+[[ $ARCH_x86_64 ]] && DEPEND="$DEPEND libiconv libiconv-devel"
 
 PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
 git_REQUIRES="cygutils less openssh rsync"
