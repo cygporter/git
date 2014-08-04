@@ -36,6 +36,7 @@ DEPEND="
 	docbook-xml45
 	docbook2X
 	gcc-core
+	gettext
 	gettext-devel
 	libcurl-devel
 	libexpat-devel
