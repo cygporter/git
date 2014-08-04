@@ -37,7 +37,6 @@ DEPEND="
 	gettext-devel
 	libcurl-devel
 	libexpat-devel
-	libiconv-devel
 	openssl-devel
 	xmlto
 "
