@@ -28,6 +28,7 @@ inherit git
 PATCH_URI="
 	1.8.5.2-cygwin.patch
 	expect-successful-case-sensitive-rename.patch
+	do-not-delete-test-results.patch
 "
 
 DEPEND="
