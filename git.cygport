@@ -107,6 +107,10 @@ src_install() {
 }
 
 src_test() {
+	# Test t4018 fails if the files in the build directory are left as
+	# symlinks rather than being real files.
+	rm ${B}/t/t4018/*
+	cp ${S}/t/t4018/* ${B}/t/t4018
 	cd ${B}
 	GIT_TEST_OPTS=--tee cygtest
 }
