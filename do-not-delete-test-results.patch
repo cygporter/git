@@ -1,8 +1,6 @@
-diff --git a/t/Makefile b/t/Makefile
-index 43b15e3..3c84640 100644
 --- origsrc/git/t/Makefile
 +++ src/git/t/Makefile
-@@ -46,8 +46,13 @@ $(T):
+@@ -45,8 +45,13 @@ $(T):
  pre-clean:
  	$(RM) -r '$(TEST_RESULTS_DIRECTORY_SQ)'
  
