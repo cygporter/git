@@ -1,0 +1,15 @@
+--- origsrc/git/t/t0050-filesystem.sh	2014-08-02 18:29:00.000000000 +0100
++++ src/git/t/t0050-filesystem.sh	2014-08-04 19:38:20.043850600 +0100
+@@ -64,7 +64,11 @@ test_expect_success "setup case tests" '
+ 	git checkout -f master
+ '
+ 
+-$test_case 'rename (case change)' '
++# This was originally expected to fail on Cygwin, but at least on NTFS, that's
++not going to happen:  despite being generally case insensitive, NTFS does store
++case of files.
++#$test_case 'rename (case change)' '
++test_expect_success 'rename (case change)' '
+ 	git mv camelcase CamelCase &&
+ 	git commit -m "rename"
+ '

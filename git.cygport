@@ -27,6 +27,7 @@ inherit git
 
 PATCH_URI="
 	1.8.5.2-cygwin.patch
+	2.0.4.cygwin.patch
 "
 
 DEPEND="
