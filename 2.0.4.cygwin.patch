@@ -6,8 +6,8 @@
  
 -$test_case 'rename (case change)' '
 +# This was originally expected to fail on Cygwin, but at least on NTFS, that's
-+not going to happen:  despite being generally case insensitive, NTFS does store
-+case of files.
++# not going to happen:  despite being generally case insensitive, NTFS does
++# store the case of file names.
 +#$test_case 'rename (case change)' '
 +test_expect_success 'rename (case change)' '
  	git mv camelcase CamelCase &&
