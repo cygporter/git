@@ -38,6 +38,7 @@ DEPEND="
 	gcc-core
 	gettext
 	gettext-devel
+	gnupg
 	libcurl-devel
 	libexpat-devel
 	openssl-devel
