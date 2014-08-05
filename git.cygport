@@ -42,6 +42,7 @@ DEPEND="
 	libexpat-devel
 	openssl-devel
 	xmlto
+	perl(IO::Pty)
 "
 
 [[ $ARCH_x86_64 ]] && DEPEND="$DEPEND libiconv libiconv-devel"
