@@ -42,6 +42,7 @@ DEPEND="
 	libcurl-devel
 	libexpat-devel
 	openssl-devel
+	time
 	xmlto
 	perl(IO::Pty)
 "
