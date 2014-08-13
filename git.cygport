@@ -93,7 +93,7 @@ src_compile() {
 	cygmake configure
 	lndirs
 	cd ${B}
-	cygconf --htmldir=/usr/share/doc/git/html --mandir=/usr/share/man
+	cygconf --htmldir=/usr/share/doc/git/html --mandir=/usr/share/man --with-libpcre
 	cygmake all
 	cygmake html
 	cygmake man
