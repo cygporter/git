@@ -44,6 +44,7 @@ DEPEND="
 	openssl-devel
 	time
 	xmlto
+	perl(DBD::SQLite)
 	perl(IO::Pty)
 "
 
