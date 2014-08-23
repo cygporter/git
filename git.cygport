@@ -48,9 +48,9 @@ DEPEND="
 	perl(IO::Pty)
 "
 
-DIFF_EXCLUDES="random_seed trustdb.gpg"
-
 [[ $ARCH_x86_64 ]] && DEPEND="$DEPEND libiconv libiconv-devel"
+
+DIFF_EXCLUDES="random_seed trustdb.gpg"
 
 PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
 git_REQUIRES="cygutils less openssh rsync"
