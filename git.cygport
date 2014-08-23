@@ -44,8 +44,12 @@ DEPEND="
 	openssl-devel
 	time
 	xmlto
+	perl(Authen::SASL)
 	perl(DBD::SQLite)
 	perl(IO::Pty)
+	perl(IO::Socket::SSL)
+	perl(Mail::Address)
+	perl(Net::SMTP)
 "
 
 [[ $ARCH_x86_64 ]] && DEPEND="$DEPEND libiconv libiconv-devel"
