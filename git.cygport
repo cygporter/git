@@ -48,8 +48,6 @@ DEPEND="
 	perl(IO::Pty)
 "
 
-DIFF_EXCLUDES="random_seed trustdb.gpg"
-
 [[ $ARCH_x86_64 ]] && DEPEND="$DEPEND libiconv libiconv-devel"
 
 PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
@@ -87,7 +85,7 @@ git_svn_CONTENTS="usr/libexec/git-core/git-svn ${PERL_VENDORLIB#/}/Git/SVN*
 git_svn_REQUIRES="subversion-perl"
 
 MAKEOPTS+=" ASCIIDOC8=yes INSTALLDIRS=vendor"
-DIFF_EXCLUDES='configure GIT-VERSION-FILE'
+DIFF_EXCLUDES='configure GIT-VERSION-FILE random_seed trustdb.gpg'
 
 src_compile() {
 	# the configure script is not distributed, and VPATH builds aren't supported
