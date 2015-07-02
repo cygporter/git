@@ -49,6 +49,7 @@ DEPEND="
 	perl(IO::Socket::SSL)
 	perl(Mail::Address)
 	perl(Net::SMTP)
+	perl(XML::SAX::Exception)
 "
 
 [[ $ARCH_x86_64 ]] && DEPEND="$DEPEND libiconv libiconv-devel"
