@@ -118,7 +118,6 @@ src_test() {
 	rm ${B}/t/t4018/*
 	cp ${S}/t/t4018/* ${B}/t/t4018
 	cd ${B}
-	[[ $ARCH_i686 ]] && skip_tests=t9200
 	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS=--tee cygtest
 }
 
