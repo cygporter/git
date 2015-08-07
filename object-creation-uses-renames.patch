@@ -1,0 +1,10 @@
+--- origsrc/git-v2.4.5/config.mak.uname	2015-06-25 19:03:05.000000000 +0100
++++ src/git-v2.4.5/config.mak.uname	2015-08-07 11:45:06.406807400 +0100
+@@ -183,6 +183,7 @@ ifeq ($(uname_O),Cygwin)
+ 	X = .exe
+ 	UNRELIABLE_FSTAT = UnfortunatelyYes
+ 	SPARSE_FLAGS = -isystem /usr/include/w32api -Wno-one-bit-signed-bitfield
++	OBJECT_CREATION_USES_RENAMES = UnfortunatelyNeedsTo
+ endif
+ ifeq ($(uname_S),FreeBSD)
+ 	NEEDS_LIBICONV = YesPlease
