@@ -86,7 +86,7 @@ git_svn_CONTENTS="usr/libexec/git-core/git-svn ${PERL_VENDORLIB#/}/Git/SVN*
 	usr/share/doc/git/html/git-svn* usr/share/man/man1/git-svn.1*
 	usr/share/man/man3/Git.SVN.*"
 
-MAKEOPTS+=" ASCIIDOC8=yes INSTALLDIRS=vendor"
+MAKEOPTS+=" INSTALLDIRS=vendor"
 DIFF_EXCLUDES='configure GIT-VERSION-FILE random_seed trustdb.gpg'
 
 src_compile() {
