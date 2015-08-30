@@ -8,8 +8,8 @@
 inherit perl
 
 NAME="git"
-VERSION=2.4.5
-RELEASE=3
+VERSION=2.5.1
+RELEASE=1
 CATEGORY="Devel"
 SUMMARY="Distributed version control system"
 DESCRIPTION="Git is a free and open source distributed version control system
