@@ -4,4 +4,13 @@ Building and packaging the 32-bit Git needs to be done on a 32-bit Cygwin instal
 
     cygport git.cygport download prep compile test install package upload
 
+## Test failures
+
+Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | Issue   | Notes
+------|------------|------------|------------|------------|---------|-------
+t5813 |            |            |            |            |         |
+t7008 | 100%       | 100%       | 100%       | 100%       | [#8][]  | Should be failing!
+t7063 |            |            |            |            |         |
+
 [Cygwin]: http://www.cygwin.com
+[#8]: https://github.com/me-and/Cygwin-Git/issues/8
