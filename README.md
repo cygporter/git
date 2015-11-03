@@ -14,14 +14,16 @@ Percentages are rough failure rates on the Cygport build.  Blanks mean I haven't
 
 Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | Issue   | Notes
 ------|------------|------------|------------|------------|---------|-------
-t0025 |            |            | 1.5%       |            |         |
+t0025 |            | 3.7%       | 1.5%       | 3.8%       | [#12][] |
 t5813 | N/A        | N/A        | 100%       | 100%       | [#11][] | Added after v2.5.3, and appears to have been failing ever since.
 t7008 | 0%         | 0%         | 0%         | 0%         | [#8][]  | Should be failing!
-t7063 |            |            |            |            | [#10][] |
-t9167 |            |            |            | 4%         |         |
+t7063 |            | 80%        | 84%        | 72%        | [#10][] |
+t9167 |            | 14%        | 5%         | 4%         | [#13][] |
 
 [Cygwin]: http://www.cygwin.com
 [fork failure]: https://cygwin.com/faq.html#faq.using.fixing-fork-failures
 [#8]: https://github.com/me-and/Cygwin-Git/issues/8
 [#10]: https://github.com/me-and/Cygwin-Git/issues/10
 [#11]: https://github.com/me-and/Cygwin-Git/issues/11
+[#12]: https://github.com/me-and/Cygwin-Git/issues/12
+[#13]: https://github.com/me-and/Cygwin-Git/issues/13
