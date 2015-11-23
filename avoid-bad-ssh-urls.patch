@@ -1,0 +1,34 @@
+commit 681390b3f618ebffb94de36e6de21665023f6e92
+Author: Dennis Kaarsemaker <dennis@kaarsemaker.net>
+Date:   Mon Nov 9 18:49:35 2015 +0100
+
+    t5813: avoid creating urls that break on cygwin
+
+    When passed an ssh:// url, git strips ssh://host from the url but does
+    not remove leading slashes from the path. So when this test used
+    ssh://remote//path/to/pwd, the path accessed by our fake SSH is
+    //path/to/pwd, which cygwin interprets as a UNC path, causing the test
+    to fail.
+
+    We may want to actually fix this in git itself, making it remove extra
+    slashes from urls before feeding them to transports or helpers, but
+    that's for another topic as it could cause regressions.
+
+    Signed-off-by: Dennis Kaarsemaker <dennis@kaarsemaker.net>
+    Signed-off-by: Jeff King <peff@peff.net>
+
+diff --git a/t/t5813-proto-disable-ssh.sh b/t/t5813-proto-disable-ssh.sh
+index ad877d7..a954ead 100755
+--- a/t/t5813-proto-disable-ssh.sh
++++ b/t/t5813-proto-disable-ssh.sh
+@@ -14,7 +14,7 @@ test_expect_success 'setup repository to clone' '
+ '
+
+ test_proto "host:path" ssh "remote:repo.git"
+-test_proto "ssh://" ssh "ssh://remote/$PWD/remote/repo.git"
+-test_proto "git+ssh://" ssh "git+ssh://remote/$PWD/remote/repo.git"
++test_proto "ssh://" ssh "ssh://remote$PWD/remote/repo.git"
++test_proto "git+ssh://" ssh "git+ssh://remote$PWD/remote/repo.git"
+
+ test_done
+
