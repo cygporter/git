@@ -8,7 +8,7 @@ Building and packaging the 32-bit Git needs to be done on a 32-bit Cygwin instal
 
 **When investigating test failures, remember to check you're looking at something more interesting than a [fork failure][].  If you spend hours digging into something that turns out to be a common fork failure, you'll be righteously annoyed with yourself.  Here speaks the voice of painful experience.**
 
-The below test failures were all noted as part of building the v2.6.2 release for Cygwin.  Comparisons with the v2.5.3 release are to help distinguish whether releasing v2.6.2 will make anything any worse, and to help track down where bugs were introduced.
+The below tests were all spotted in the v2.6.2 build or later; comparison with earlier releases is to check whether the tests have been made any worse.  I suspect a significant proportion of the failures are [BLODA][], with the obvious potential culprit being Windows Defender on Windows 10.
 
 Percentages are rough failure rates on the Cygport build.  Blanks mean I haven't tried yet, or I tried then forgot the result.
 
@@ -22,6 +22,7 @@ t9167 |            | 14%        | 5%         | 4%         |            | 6%     
 
 [Cygwin]: http://www.cygwin.com
 [fork failure]: https://cygwin.com/faq.html#faq.using.fixing-fork-failures
+[BLODA]: https://cygwin.com/acronyms/#BLODA
 [#8]: https://github.com/me-and/Cygwin-Git/issues/8
 [#10]: https://github.com/me-and/Cygwin-Git/issues/10
 [#11]: https://github.com/me-and/Cygwin-Git/issues/11
