@@ -15,7 +15,6 @@ Percentages are rough failure rates on the Cygport build.  Blanks mean I haven't
 Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | v2.6.3 32b | v2.6.3 64b | Issue   | Notes
 ------|------------|------------|------------|------------|------------|------------|---------|-------
 t0025 |            | 3.7%       | 1.5%       | 3.8%       |            |            | [#12][] |
-t5813 | N/A        | N/A        | 100%       | 100%       |            |            | [#11][] | Failing since it was first added.  Fixed in the upstream "pu" branch, with that fix also patched in here.
 t7008 | 0%         | 0%         | 0%         | 0%         |            |            | [#8][]  | Should be failing!
 t7063 |            | 80%        | 84%        | 72%        |            |            | [#10][] | Failing tests are disabled in the Cygport file
 t9128 |            |            |            |            | 2%         | 5%         | [#16][] |
