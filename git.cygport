@@ -29,6 +29,7 @@ PATCH_URI="
 
 DEPEND="
 	asciidoc
+	bash-completion
 	dblatex
 	docbook-xml45
 	docbook2X
@@ -41,6 +42,7 @@ DEPEND="
 	libiconv
 	libiconv-devel
 	openssl-devel
+	pkg-config
 	time
 	xmlto
 	perl(Authen::SASL)
@@ -51,6 +53,8 @@ DEPEND="
 	perl(Net::SMTP)
 	perl(XML::SAX::Exception)
 "
+
+BASH_COMPLETION_DIR="$(pkg-config --variable=completionsdir bash-completion)"
 
 PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
 git_REQUIRES="cygutils less openssh rsync"
@@ -107,7 +111,7 @@ src_install() {
 	cyginstall install-html install-man install-info install-pdf pdfdir=/usr/share/doc/git
 
 	# ship bash completion
-	insinto /etc/bash_completion.d
+	insinto ${BASH_COMPLETION_DIR}
 	newins ${S}/contrib/completion/git-completion.bash git
 }
 
