@@ -120,9 +120,6 @@ src_test() {
 	cp ${S}/t/t4018/* ${B}/t/t4018
 	cd ${B}
 
-	# Skip failing t5813 tests.
-	skip_tests=$(echo t5813.{{9..13},{15..19}})
-
 	# Skip failing t7063 tests.
 	skip_tests="$skip_tests $(echo t7063.{{24..26},{28..32}})"
 
