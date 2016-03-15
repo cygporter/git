@@ -126,9 +126,3 @@ src_test() {
 
 	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS=--tee cygtest
 }
-
-# Local Variables:
-# fill-column: 72
-# mode: sh
-# sh-indentation: 2
-# End:
