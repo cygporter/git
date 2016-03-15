@@ -64,7 +64,7 @@ git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
 	usr/bin/ usr/libexec/git-core/ ${PERL_VENDORLIB#/} ${PYTHON_SITELIB#/} usr/share/
 	${BASH_COMPLETION_DIR#/}"
 gitk_SUMMARY="Git repository browser"
-gitk_REQUIRES="git font-adobe-dpi75"
+gitk_REQUIRES="git xorg-x11-fonts-dpi75"
 gitk_CONTENTS="usr/bin/gitk usr/share/doc/git/html/gitk* usr/share/gitk
 	usr/share/man/man1/gitk.1*"
 gitweb_SUMMARY="Web interface for Git version control system"
