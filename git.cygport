@@ -41,6 +41,7 @@ DEPEND="
 	libexpat-devel
 	libiconv
 	libiconv-devel
+	libpcre-devel
 	openssl-devel
 	pkg-config
 	subversion-perl
