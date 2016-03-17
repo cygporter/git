@@ -43,6 +43,7 @@ DEPEND="
 	libiconv-devel
 	openssl-devel
 	pkg-config
+	subversion-perl
 	time
 	xmlto
 	perl(Authen::SASL)
