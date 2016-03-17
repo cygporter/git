@@ -12,13 +12,14 @@ The below tests were all spotted in the v2.6.2 build or later; comparison with e
 
 Percentages are rough failure rates on the Cygport build.  Blanks mean I haven't tried yet, or I tried then forgot the result.
 
-Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | v2.6.3 32b | v2.6.3 64b | Issue   | Notes
-------|------------|------------|------------|------------|------------|------------|---------|-------
-t0025 |            | 3.7%       | 1.5%       | 3.8%       |            |            | [#12][] |
-t7008 | 0%         | 0%         | 0%         | 0%         |            |            | [#8][]  | Should be failing!
-t7063 |            | 80%        | 84%        | 72%        |            |            | [#10][] | Failing tests are disabled in the Cygport file
-t9128 |            |            |            |            | 2%         | 5%         | [#16][] |
-t9167 |            | 14%        | 5%         | 4%         |            | 6%         | [#13][] |
+Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | v2.6.3 32b | v2.6.3 64b | v2.7.3 32b | v2.7.3 64b | Issue   | Notes
+------|------------|------------|------------|------------|------------|------------|------------|------------|---------|-------
+t0025 |            | 3.7%       | 1.5%       | 3.8%       |            |            |            |            | [#12][] |
+t5811 |            |            |            |            |            |            | 0%         | 100%       | [#20][] | Failing tests are disabled in the Cygport file
+t7008 | 0%         | 0%         | 0%         | 0%         |            |            |            |            | [#8][]  | Should be failing!
+t7063 |            | 80%        | 84%        | 72%        |            |            |            |            | [#10][] | Failing tests are disabled in the Cygport file
+t9128 |            |            |            |            | 2%         | 5%         |            |            | [#16][] |
+t9167 |            | 14%        | 5%         | 4%         |            | 6%         |            |            | [#13][] |
 
 [Cygwin]: http://www.cygwin.com
 [fork failure]: https://cygwin.com/faq.html#faq.using.fixing-fork-failures
@@ -29,3 +30,4 @@ t9167 |            | 14%        | 5%         | 4%         |            | 6%     
 [#12]: https://github.com/me-and/Cygwin-Git/issues/12
 [#13]: https://github.com/me-and/Cygwin-Git/issues/13
 [#16]: https://github.com/me-and/Cygwin-Git/issues/16
+[#20]: https://github.com/me-and/Cygwin-Git/issues/20
