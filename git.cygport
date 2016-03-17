@@ -52,6 +52,8 @@ DEPEND="
 	perl(IO::Socket::SSL)
 	perl(Mail::Address)
 	perl(Net::SMTP)
+	perl(Term::ReadKey)
+	perl(YAML)
 	perl(XML::SAX::Exception)
 "
 
