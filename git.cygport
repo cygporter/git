@@ -60,7 +60,7 @@ PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
 git_REQUIRES="cygutils less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
 	--exclude=git-gui* --exclude=git-svn* --exclude=SVN* --exclude=Git.SVN.*
-	--exclude=git-instaweb* --exclude=gitweb*
+	--exclude=git-instaweb* --exclude=gitweb* --exclude=${BASH_COMPLETION_DIR#/}
 	usr/bin/ usr/libexec/git-core/ ${PERL_VENDORLIB#/} ${PYTHON_SITELIB#/} usr/share/"
 gitk_SUMMARY="Git repository browser"
 gitk_REQUIRES="git xorg-x11-fonts-dpi75"
@@ -72,7 +72,7 @@ gitweb_CONTENTS="usr/libexec/git-core/git-instaweb* usr/share/doc/git/html/*[^-]
 	usr/share/gitweb/ usr/share/man/man1/*[^-]web* usr/share/man/man5/gitweb*"
 git_completion_SUMMARY="Bash completion for Git version control system"
 git_completion_REQUIRES="bash bash-completion git"
-git_completion_CONTENTS="etc/bash_completion.d/"
+git_completion_CONTENTS="${BASH_COMPLETION_DIR#/}"
 git_cvs_SUMMARY="CVS compatibilty support for Git version control system"
 git_cvs_REQUIRES="cvsps perl-DBD-SQLite"
 git_cvs_CONTENTS="usr/bin/git-cvs* usr/libexec/git-core/git-cvs*
