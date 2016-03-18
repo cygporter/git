@@ -61,7 +61,7 @@ DEPEND="
 BASH_COMPLETION_DIR="$(pkg-config --variable=completionsdir bash-completion)"
 
 PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
-git_REQUIRES="cygutils less openssh rsync"
+git_REQUIRES="cygutils bash less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
 	--exclude=git-gui* --exclude=git-svn* --exclude=SVN* --exclude=Git.SVN.*
 	--exclude=git-instaweb* --exclude=gitweb* --exclude=${BASH_COMPLETION_DIR#/}
