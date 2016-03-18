@@ -71,7 +71,7 @@ gitk_REQUIRES="git xorg-x11-fonts-dpi75"
 gitk_CONTENTS="usr/bin/gitk usr/share/doc/git/html/gitk* usr/share/gitk
 	usr/share/man/man1/gitk.1*"
 gitweb_SUMMARY="Web interface for Git version control system"
-gitweb_REQUIRES="git lighttpd"
+gitweb_REQUIRES="git lighttpd ruby"
 gitweb_CONTENTS="usr/libexec/git-core/git-instaweb* usr/share/doc/git/html/*[^-]web*
 	usr/share/gitweb/ usr/share/man/man1/*[^-]web* usr/share/man/man5/gitweb*"
 git_completion_SUMMARY="Bash completion for Git version control system"
