@@ -60,14 +60,13 @@ DEPEND="
 
 BASH_COMPLETION_DIR="$(pkg-config --variable=completionsdir bash-completion)"
 
-PKG_NAMES="git gitk gitweb git-completion git-cvs git-email git-gui git-svn"
+PKG_NAMES="git gitk gitweb git-cvs git-email git-gui git-svn"
 git_REQUIRES="cygutils bash less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
 	--exclude=git-gui* --exclude=git-svn* --exclude=SVN* --exclude=Git.SVN.*
 	--exclude=git-instaweb* --exclude=gitweb*
 	usr/bin/ usr/libexec/git-core/ ${PERL_VENDORLIB#/} ${PYTHON_SITELIB#/} usr/share/"
 git_OBSOLETES="git-completion"
-git_completion_CATEGORY="_obsolete"
 gitk_SUMMARY="Git repository browser"
 gitk_REQUIRES="git xorg-x11-fonts-dpi75"
 gitk_CONTENTS="usr/bin/gitk usr/share/doc/git/html/gitk* usr/share/gitk
