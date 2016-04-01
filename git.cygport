@@ -125,8 +125,5 @@ src_test() {
 	cp ${S}/t/t4018/* ${B}/t/t4018
 	cd ${B}
 
-	# Skip failing t5811 tests.
-	[[ $ARCH_x86_64 ]] && skip_tests="$skip_tests t5811.4"
-
 	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS=--tee cygtest
 }
