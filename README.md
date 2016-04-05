@@ -13,7 +13,7 @@ The below tests were all spotted in the v2.6.2 build or later; comparison with e
 Percentages are rough failure rates on the Cygport build.  Blanks mean I haven't tried yet, or I tried then forgot the result.
 
 Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | v2.6.3 32b | v2.6.3 64b | v2.7.3 32b | v2.7.3 64b | v2.8.0 32b | v2.8.0 64b | Issue   | Notes
-------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------| --------|-------
+------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|---------|-------
 t0025 |            | 3.7%       | 1.5%       | 3.8%       |            |            |            |            |            |            | [#12][] |
 t5811 |            |            |            |            |            |            | 0%         | 100%       |            |            | [#20][] | Failing tests are disabled in the Cygport file
 t7008 | 0%         | 0%         | 0%         | 0%         |            |            |            |            |            |            | [#8][]  | Should be failing!
