@@ -23,8 +23,6 @@ t9167 |            | 14%        | 5%         | 4%         |            | 6%     
 [fork failure]: https://cygwin.com/faq.html#faq.using.fixing-fork-failures
 [BLODA]: https://cygwin.com/acronyms/#BLODA
 [#8]: https://github.com/me-and/Cygwin-Git/issues/8
-[#11]: https://github.com/me-and/Cygwin-Git/issues/11
 [#12]: https://github.com/me-and/Cygwin-Git/issues/12
 [#13]: https://github.com/me-and/Cygwin-Git/issues/13
 [#16]: https://github.com/me-and/Cygwin-Git/issues/16
-[#20]: https://github.com/me-and/Cygwin-Git/issues/20
