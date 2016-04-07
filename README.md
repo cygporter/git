@@ -14,10 +14,11 @@ Percentages are rough failure rates on the Cygport build.  Blanks mean I haven't
 
 Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | v2.6.3 32b | v2.6.3 64b | v2.8.0 32b | v2.8.0 64b | Issue   | Notes
 ------|------------|------------|------------|------------|------------|------------|------------|------------|---------|-------
-t0025 |            | 3.7%       | 1.5%       | 3.8%       |            |            |            |            | [#12][] |
+t0025 |            | 3.7%       | 1.5%       | 3.8%       |            |            | 1.4%       | 3.4%       | [#12][] |
+t1410 |            |            | 0.07%      | 0.2%       |            |            | 1%         | 0.2%       | [#23][] |
 t7008 | 0%         | 0%         | 0%         | 0%         |            |            | 0%         | 0%         | [#8][]  | Should be failing!
-t9128 |            |            |            |            | 2%         | 5%         |            |            | [#16][] |
-t9167 |            | 14%        | 5%         | 4%         |            | 6%         |            |            | [#13][] |
+t9128 |            |            |            |            | 2%         | 5%         | 1.5%       | 4%         | [#16][] |
+t9167 |            | 14%        | 5%         | 4%         |            | 6%         | 10%        | 19%        | [#13][] |
 
 [Cygwin]: http://www.cygwin.com
 [fork failure]: https://cygwin.com/faq.html#faq.using.fixing-fork-failures
@@ -26,3 +27,4 @@ t9167 |            | 14%        | 5%         | 4%         |            | 6%     
 [#12]: https://github.com/me-and/Cygwin-Git/issues/12
 [#13]: https://github.com/me-and/Cygwin-Git/issues/13
 [#16]: https://github.com/me-and/Cygwin-Git/issues/16
+[#23]: https://github.com/me-and/Cygwin-Git/issues/23
