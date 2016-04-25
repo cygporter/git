@@ -30,6 +30,7 @@ PATCH_URI="
 DEPEND="
 	asciidoc
 	bash-completion
+	bash-completion-devel
 	dblatex
 	docbook-xml45
 	docbook2X
