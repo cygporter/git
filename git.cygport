@@ -45,6 +45,7 @@ DEPEND="
 	subversion-perl
 	time
 	xmlto
+	zlib-devel
 	perl(Authen::SASL)
 	perl(DBD::SQLite)
 	perl(IO::Pty)
