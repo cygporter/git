@@ -12,13 +12,16 @@ The below tests were all spotted in the v2.6.2 build or later; comparison with e
 
 Percentages are rough failure rates on the Cygport build.  Blanks mean I haven't tried yet, or I tried then forgot the result.
 
-Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | v2.6.3 32b | v2.6.3 64b | v2.8.0 32b | v2.8.0 64b | Issue   | Notes
-------|------------|------------|------------|------------|------------|------------|------------|------------|---------|-------
-t0025 |            | 3.7%       | 1.5%       | 3.8%       |            |            | 1.4%       | 3.4%       | [#12][] |
-t1410 |            |            | 0.07%      | 0.2%       |            |            | 1%         | 0.2%       | [#23][] |
-t7008 | 0%         | 0%         | 0%         | 0%         |            |            | 0%         | 0%         | [#8][]  | Should be failing!
-t9128 |            |            |            |            | 2%         | 5%         | 1.5%       | 4%         | [#16][] |
-t9167 |            | 14%        | 5%         | 4%         |            | 6%         | 10%        | 19%        | [#13][] |
+Test  | v2.5.3 32b | v2.5.3 64b | v2.6.2 32b | v2.6.2 64b | v2.6.3 32b | v2.6.3 64b | v2.8.0 32b | v2.8.0 64b | v2.12.2 32b | v2.12.2 64b | Issue   | Notes
+------|------------|------------|------------|------------|------------|------------|------------|------------|-------------|-------------|---------|-------
+t0025 |            | 3.7%       | 1.5%       | 3.8%       |            |            | 1.4%       | 3.4%       | 1.8%        | 2.6%        | [#12][] |
+t1410 |            |            | 0.07%      | 0.2%       |            |            | 1%         | 0.2%       |             |             | [#23][] | Suspect BLODA
+t4062 |            |            |            |            |            |            |            |            | 100%        | 100%        | [#28][] | Passes as expected if `configure` isn't run
+t7006 |            |            |            |            |            |            |            |            | 100%        | 100%        | [#29][] |
+t7008 | 0%         | 0%         | 0%         | 0%         |            |            | 0%         | 0%         | 0%          | 0%          | [#8][]  | Should be failing!  Fails as expected if `configure` isn't run.
+t8010 |            |            |            |            |            |            |            |            | 100%        | 100%        | [#30][] |
+t9128 |            |            |            |            | 2%         | 5%         | 1.5%       | 4%         |             |             | [#16][] | Suspect BLODA
+t9167 |            | 14%        | 5%         | 4%         |            | 6%         | 10%        | 19%        |             |             | [#13][] | Suspect BLODA
 
 [Cygwin]: http://www.cygwin.com
 [fork failure]: https://cygwin.com/faq.html#faq.using.fixing-fork-failures
@@ -28,3 +31,6 @@ t9167 |            | 14%        | 5%         | 4%         |            | 6%     
 [#13]: https://github.com/me-and/Cygwin-Git/issues/13
 [#16]: https://github.com/me-and/Cygwin-Git/issues/16
 [#23]: https://github.com/me-and/Cygwin-Git/issues/23
+[#28]: https://github.com/me-and/Cygwin-Git/issues/28
+[#29]: https://github.com/me-and/Cygwin-Git/issues/29
+[#30]: https://github.com/me-and/Cygwin-Git/issues/30
