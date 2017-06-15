@@ -59,11 +59,11 @@ DEPEND="
 
 BASH_COMPLETION_DIR="$(pkg-config --variable=completionsdir bash-completion)"
 
-PKG_NAMES="git gitk gitweb git-cvs git-email git-gui git-svn"
+PKG_NAMES="git gitk gitweb git-cvs git-email git-gui git-p4 git-svn"
 git_REQUIRES="cygutils less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
 	--exclude=git-gui* --exclude=git-svn* --exclude=SVN* --exclude=Git.SVN.*
-	--exclude=git-instaweb* --exclude=gitweb*
+	--exclude=git-instaweb* --exclude=gitweb* --exclude=*p4*
 	usr/bin/ usr/libexec/git-core/ ${PERL_VENDORLIB#/} ${PYTHON_SITELIB#/} usr/share/"
 git_OBSOLETES="git-completion"
 gitk_SUMMARY="Git repository browser"
@@ -85,6 +85,10 @@ git_gui_SUMMARY="Graphical interface for Git version control system"
 git_gui_REQUIRES="git gitk"
 git_gui_CONTENTS="usr/libexec/git-core/git-gui* usr/share/doc/git/html/git-gui*
 	usr/share/git-gui/ usr/share/man/man1/git-gui.1*"
+git_p4_SUMMARY="Perforce compatibility support for Git version control system"
+git_p4_REQUIRES="git"
+git_p4_CONTENTS="usr/libexec/git-core/git-p4 usr/libexec/git-core/mergetools/p4merge
+	usr/share/doc/git/html/git-p4* usr/share/man/man1/git-p4.1*"
 git_svn_SUMMARY="Subversion compatibility support for Git version control system"
 git_svn_CONTENTS="usr/libexec/git-core/git-svn ${PERL_VENDORLIB#/}/Git/SVN*
 	usr/share/doc/git/html/git-svn* usr/share/man/man1/git-svn.1*
