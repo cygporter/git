@@ -65,7 +65,7 @@ git_REQUIRES="cygutils less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
 	--exclude=git-gui* --exclude=git-svn* --exclude=SVN* --exclude=Git.SVN.*
 	--exclude=git-instaweb* --exclude=gitweb* --exclude=*p4*
-	usr/bin/ usr/libexec/git-core/ ${PERL_VENDORLIB#/} ${PYTHON_SITELIB#/} usr/share/"
+	usr/bin/ usr/libexec/git-core/ ${PYTHON_SITELIB#/} usr/share/"
 git_OBSOLETES="git-completion"
 gitk_SUMMARY="Git repository browser"
 gitk_REQUIRES="git xorg-x11-fonts-dpi75"
