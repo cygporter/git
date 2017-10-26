@@ -53,6 +53,7 @@ DEPEND="
 	perl(Mail::Address)
 	perl(Net::SMTP)
 	perl(Term::ReadKey)
+	perl(Test::Harness)
 	perl(YAML)
 	perl(XML::SAX::Exception)
 "
@@ -127,5 +128,5 @@ src_test() {
 	cp ${S}/t/t4018/* ${B}/t/t4018
 	cd ${B}
 
-	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS=--tee cygtest
+	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS=--tee DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS='--jobs 4' cygtest
 }
