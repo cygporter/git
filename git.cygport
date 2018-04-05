@@ -99,6 +99,9 @@ MAKEOPTS+=" INSTALLDIRS=vendor"
 DIFF_EXCLUDES='configure GIT-VERSION-FILE random_seed trustdb.gpg'
 
 src_compile() {
+	# Disable CPAN fallbacks in favour of Cygwin-packaged Perl modules.
+	export NO_PERL_CPAN_FALLBACKS=YesPlease
+
 	# the configure script is not distributed, and VPATH builds aren't supported
 	cd ${S}
 	cygmake configure
