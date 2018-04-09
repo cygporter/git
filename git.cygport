@@ -133,5 +133,5 @@ src_test() {
 	# Skip failing t7006 tests.
 	skip_tests='t7006.6'
 
-	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS=--tee DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS='--jobs 4' cygtest
+	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS=--tee DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1))" cygtest
 }
