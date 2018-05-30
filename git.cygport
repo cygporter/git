@@ -8,7 +8,7 @@
 inherit perl
 
 NAME="git"
-VERSION=2.17.0
+VERSION=2.17.1
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="Distributed version control system"
@@ -91,7 +91,7 @@ git_p4_REQUIRES="git"
 git_p4_CONTENTS="usr/libexec/git-core/git-p4 usr/libexec/git-core/mergetools/p4merge
 	usr/share/doc/git/html/git-p4* usr/share/man/man1/git-p4.1*"
 git_svn_SUMMARY="Subversion compatibility support for Git version control system"
-git_svn_CONTENTS="usr/libexec/git-core/git-svn ${PERL_VENDORLIB#/}/Git/SVN*
+git_svn_CONTENTS="usr/libexec/git-core/git-svn usr/share/perl*/Git/SVN*
 	usr/share/doc/git/html/git-svn* usr/share/man/man1/git-svn.1*"
 
 MAKEOPTS+=" INSTALLDIRS=vendor"
@@ -133,5 +133,5 @@ src_test() {
 	# Skip failing t7006 tests.
 	skip_tests='t7006.6'
 
-	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS=--tee DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1))" cygtest
+	GIT_SKIP_TESTS=$skip_tests GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1))" cygtest
 }
