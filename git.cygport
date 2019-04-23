@@ -40,7 +40,7 @@ DEPEND="
 	libiconv
 	libiconv-devel
 	libpcre-devel
-	openssl-devel
+	libssl-devel
 	pkg-config
 	subversion-perl
 	time
