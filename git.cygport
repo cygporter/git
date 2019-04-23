@@ -103,7 +103,7 @@ src_compile() {
 
 	# the configure script is not distributed, and VPATH builds aren't supported
 	cd ${S}
-	cygmake configure
+	cygmake configure perllibdir="$PERL_VENDORLIB"
 	lndirs
 	cd ${B}
 	cygconf --htmldir=/usr/share/doc/git/html --mandir=/usr/share/man --with-libpcre
