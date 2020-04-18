@@ -101,6 +101,11 @@ src_compile() {
 	# Disable CPAN fallbacks in favour of Cygwin-packaged Perl modules.
 	export NO_PERL_CPAN_FALLBACKS=YesPlease
 
+	# Avoid warnings about parserdetails.ini.
+	if [[ ! -f /usr/lib/perl5/vendor_perl/5.14/XML/SAX/ParserDetails.ini ]]; then
+		perl -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()"
+	fi
+
 	# the configure script is not distributed, and VPATH builds aren't supported
 	cd ${S}
 	cygmake configure perllibdir="$PERL_VENDORLIB"
