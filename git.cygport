@@ -34,6 +34,7 @@ DEPEND="
 	gcc-core
 	gettext
 	gettext-devel
+	gnupg
 	gnupg2
 	libcurl-devel
 	libexpat-devel
