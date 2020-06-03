@@ -18,7 +18,7 @@ efficiency. Git is easy to learn and has a tiny footprint with lightning fast
 performance. It outclasses SCM tools like Subversion, CVS, Perforce, and
 ClearCase with features like cheap local branching, convenient staging areas,
 and multiple workflows."
-HOMEPAGE="http://git-scm.com/"
+HOMEPAGE="https://git-scm.com/"
 SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz"
 SRC_DIR="${PN}-v${PV}"
 
