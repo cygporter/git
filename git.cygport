@@ -77,10 +77,11 @@ gitweb_REQUIRES="git lighttpd perl-CGI ruby"
 gitweb_CONTENTS="usr/libexec/git-core/git-instaweb* usr/share/doc/git/html/*[^-]web*
 	usr/share/gitweb/ usr/share/man/man1/*[^-]web* usr/share/man/man5/gitweb*"
 git_cvs_SUMMARY="CVS compatibilty support for Git version control system"
-git_cvs_REQUIRES="cvsps perl-DBD-SQLite"
+git_cvs_REQUIRES="git cvsps perl-DBD-SQLite"
 git_cvs_CONTENTS="usr/bin/git-cvs* usr/libexec/git-core/git-cvs*
 	usr/share/doc/git/html/git-cvs* usr/share/man/man1/git-cvs*"
 git_email_SUMMARY="Email tools for Git version control system"
+git_email_REQUIRES="git"
 git_email_CONTENTS="usr/libexec/git-core/git-*email*
 	usr/share/doc/git/html/git-*email* usr/share/man/man1/git-*email*"
 git_gui_SUMMARY="Graphical interface for Git version control system"
@@ -92,6 +93,7 @@ git_p4_REQUIRES="git"
 git_p4_CONTENTS="usr/libexec/git-core/git-p4 usr/libexec/git-core/mergetools/p4merge
 	usr/share/doc/git/html/git-p4* usr/share/man/man1/git-p4.1*"
 git_svn_SUMMARY="Subversion compatibility support for Git version control system"
+git_svn_REQUIRES="git"
 git_svn_CONTENTS="usr/libexec/git-core/git-svn usr/share/perl*/Git/SVN*
 	usr/share/doc/git/html/git-svn* usr/share/man/man1/git-svn.1*"
 
