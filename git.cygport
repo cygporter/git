@@ -59,8 +59,6 @@ DEPEND="
 	perl(XML::SAX::Exception)
 "
 
-BASH_COMPLETION_DIR="$(pkg-config --variable=completionsdir bash-completion)"
-
 PKG_NAMES="git gitk gitweb git-cvs git-email git-gui git-p4 git-svn"
 git_REQUIRES="cygutils less openssh rsync"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
@@ -127,7 +125,7 @@ src_install() {
 	cyginstall install-html install-man install-info install-pdf pdfdir=/usr/share/doc/git
 
 	# ship bash completion
-	insinto ${BASH_COMPLETION_DIR}
+	insinto "$(pkg-config --variable=completionsdir bash-completion)"
 	newins ${S}/contrib/completion/git-completion.bash git
 }
 
