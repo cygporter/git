@@ -107,7 +107,7 @@ src_compile() {
 		perl -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()"
 	fi
 
-	# the configure script is not distributed, and VPATH builds aren't supported
+	# The configure script is not distributed, and VPATH builds aren't supported
 	cd ${S}
 	cygmake configure perllibdir="$PERL_VENDORLIB"
 	lndirs
@@ -124,7 +124,7 @@ src_install() {
 	cd ${B}
 	cyginstall install-html install-man install-info install-pdf pdfdir=/usr/share/doc/git
 
-	# ship bash completion
+	# Ship bash completion
 	insinto "$(pkg-config --variable=completionsdir bash-completion)"
 	newins ${S}/contrib/completion/git-completion.bash git
 }
