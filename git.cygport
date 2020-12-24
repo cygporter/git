@@ -19,48 +19,13 @@ performance. It outclasses SCM tools like Subversion, CVS, Perforce, and
 ClearCase with features like cheap local branching, convenient staging areas,
 and multiple workflows."
 HOMEPAGE="https://git-scm.com/"
-SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz"
+SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz
+	 build-requires.txt"
 SRC_DIR="${PN}-v${PV}"
 
 PATCH_URI='1.8.5.2-cygwin.patch'
 
-DEPEND="
-	asciidoc
-	bash-completion
-	bash-completion-devel
-	dblatex
-	docbook-xml45
-	docbook2X
-	gcc-core
-	gettext
-	gettext-devel
-	gnupg
-	gnupg2
-	libcurl-devel
-	libexpat-devel
-	libiconv
-	libiconv-devel
-	libpcre-devel
-	libssl-devel
-	pkg-config
-	subversion-perl
-	texlive-collection-fontsrecommended
-	texlive-collection-latexrecommended
-	texlive-collection-pictures
-	time
-	xmlto
-	zlib-devel
-	perl(Authen::SASL)
-	perl(DBD::SQLite)
-	perl(IO::Pty)
-	perl(IO::Socket::SSL)
-	perl(Mail::Address)
-	perl(Net::SMTP)
-	perl(Term::ReadKey)
-	perl(Test::Harness)
-	perl(YAML)
-	perl(XML::SAX::Exception)
-"
+BUILD_REQUIRES="$(tr '\n' ' ' <build-requires.txt)"
 
 PKG_NAMES="git gitk gitweb git-cvs git-email git-gui git-p4 git-svn"
 git_REQUIRES="cygutils less openssh rsync"
