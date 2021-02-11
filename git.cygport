@@ -155,6 +155,10 @@ src_test() {
 	# https://github.com/me-and/Cygwin-Git/issues/53
 	[[ "$ARCH_x86_64" ]] && main_run_skip_tests+=('t0021')
 
+	# Skip t7900 from the main run as it needs a lot of disk space.  If
+	# there's sufficient space later, we can run it then.
+	main_run_skip_tests+=('t7900')
+
 	# Return code.  Set to zero now, it'll be set to non-zero by any test
 	# that fails.
 	rc=0
@@ -171,6 +175,17 @@ src_test() {
 	# Run t0021 if it was skipped earlier.
 	if [[ "$ARCH_x86_64" ]]; then
 		( cd ${B}/t && echo t0021-*.sh && ./t0021-*.sh --tee -l; ) || rc="$?"
+	fi
+
+	# Run t7900 if there's at least 10GB free disk space.  It's much more
+	# likely that that's the case now other tests aren't running at the
+	# same time.
+	if (( $(($(stat -f --format="%a*%S" .) / 1024 / 1024 / 1024)) > 10 )); then
+		echo ${B}/t/t7900-*.sh
+		( cd ${B}/t && echo t7900-*.sh && ./t7900-*.sh --tee -l; ) || rc="$?"
+	else
+		echo 'Skipping t7900 due to lack of disk space'
+		rc=1
 	fi
 
 	return "$rc"
