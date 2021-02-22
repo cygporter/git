@@ -144,5 +144,18 @@ src_test() {
 		export GIT_SKIP_TESTS="${known_failures[*]}"
 	fi
 
-	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" cygtest
+	# Return code.  Set to zero now, it'll be set to non-zero by any test
+	# that fails.
+	rc=0
+
+	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" cygtest || rc=$?
+
+	# Check the test results by checking the recorded return codes, since
+	# the previous command seems to always succeed.  In fact, if all the
+	# tests succeeded, the grep will error out as the make command called
+	# by cygtest will automatically clean up the results directory, but
+	# that also means rc remains set to 0.
+	grep -v 0 "${B}"/t/test-results/*.exit && rc=1
+
+	return "$rc"
 }
