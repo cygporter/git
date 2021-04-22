@@ -44,6 +44,9 @@ DEPEND="
 	libssl-devel
 	pkg-config
 	subversion-perl
+	texlive-collection-fontsrecommended
+	texlive-collection-latexrecommended
+	texlive-collection-pictures
 	time
 	xmlto
 	zlib-devel
