@@ -22,7 +22,7 @@ HOMEPAGE="https://git-scm.com/"
 SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz"
 SRC_DIR="${PN}-v${PV}"
 
-PATCH_URI="1.8.5.2-cygwin.patch check-backslash-safety.patch"
+PATCH_URI='1.8.5.2-cygwin.patch'
 
 DEPEND="
 	asciidoc
