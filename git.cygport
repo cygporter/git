@@ -70,10 +70,15 @@ src_compile() {
 	# Disable CPAN fallbacks in favour of Cygwin-packaged Perl modules.
 	export NO_PERL_CPAN_FALLBACKS=YesPlease
 
-	# Avoid warnings about parserdetails.ini.
-	if [[ ! -f /usr/lib/perl5/vendor_perl/5.14/XML/SAX/ParserDetails.ini ]]; then
-		perl -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()"
-	fi
+	# Avoid warnings about Parserdetails.ini.
+	found_parserdetails=
+	while read -d $'\0' -r perlpath; do
+		if [[ -f "$perlpath"/XML/SAX/ParserDetails.ini ]]; then
+			found_parserdetails=Yes
+			break
+		fi
+	done < <(perl -e 'print join("\0", @INC) . "\0"')
+	[[ "$found_parserdetails" ]] || perl -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()"
 
 	# The configure script is not distributed, and VPATH builds aren't supported
 	cd ${S}
