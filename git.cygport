@@ -144,6 +144,14 @@ src_test() {
 		export GIT_SKIP_TESTS="${known_failures[*]}"
 	fi
 
+	# Also pull in skips set in GIT_SKIP_ADDITIONAL_TESTS.  That's an
+	# environment variable made up for this script rather than one
+	# suggested by the Git build infrastructure.  The idea is that setting
+	# GIT_SKIP_TESTS would override the previous block for skipping known
+	# failures, GIT_SKIP_ADDITIONAL_TESTS will be an addition to the
+	# previous block.
+	[[ -v GIT_SKIP_ADDITIONAL_TESTS ]] && export GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${GIT_SKIP_ADDITIONAL_TESTS}"
+
 	# Create an array of tests to skip for the main run, but which
 	# shouldn't be listed in the GIT_SKIP_TESTS environment variable,
 	# because we may want to try to run them later.
