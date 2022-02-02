@@ -10,12 +10,11 @@ jobs:
       PATH: C:\tools\cygwin\usr\local\bin;C:\tools\cygwin\usr\bin;C:\tools\cygwin\bin
     steps:
       - name: Install Cygwin Git
-        uses: egor-tensin/setup-cygwin@v2
+        uses: cygwin/cygwin-install-action@ad81540ad7c2726e17c08401fbeca6380cc7f463
         with:
           platform: ${{ matrix.platform }}
           packages: git
-        env:
-          PATH: C:\ProgramData\Chocolatey\bin
+          install-dir: 'C:\tools\cygwin'
         timeout-minutes: 10
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,23 +26,15 @@ jobs:
           echo "::set-output name=packages::$pkgs"
         timeout-minutes: 1
       - name: Install Cygwin build requirements
-        uses: egor-tensin/setup-cygwin@v2
+        uses: cygwin/cygwin-install-action@ad81540ad7c2726e17c08401fbeca6380cc7f463
         with:
           platform: ${{ matrix.platform }}
           packages: ${{ steps.cyg-package-list.outputs.packages }}
-        env:
-          PATH: C:\ProgramData\Chocolatey\bin
+          install-dir: 'C:\tools\cygwin'
         timeout-minutes: 30
       - name: Generate cygcheck output
         run: |
           C:\tools\cygwin\bin\bash.exe -c 'cygcheck -srv >/var/log/cygcheck.out'
-        if: always()
-        timeout-minutes: 5
-      - name: Store Chocolatey logs
-        uses: actions/upload-artifact@v2
-        with:
-          name: choco-logs-${{ matrix.platform }}
-          path: 'C:\ProgramData\chocolatey\logs\'
         if: always()
         timeout-minutes: 5
       - name: Store Cygwin logs
