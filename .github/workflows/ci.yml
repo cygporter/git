@@ -6,15 +6,17 @@ jobs:
       matrix:
         platform: [x64, x86]
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash --noprofile --norc -e -o pipefail -o igncr {0}
     env:
-      PATH: C:\tools\cygwin\usr\local\bin;C:\tools\cygwin\usr\bin;C:\tools\cygwin\bin
+      PATH: C:\cygwin\bin
     steps:
       - name: Install Cygwin Git
         uses: cygwin/cygwin-install-action@ad81540ad7c2726e17c08401fbeca6380cc7f463
         with:
           platform: ${{ matrix.platform }}
           packages: git
-          install-dir: 'C:\tools\cygwin'
         timeout-minutes: 10
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,73 +24,64 @@ jobs:
       - name: Load packages to install
         id: cyg-package-list
         run: |
-          $pkgs = Get-Content -Path .\build-requires.txt
-          echo "::set-output name=packages::$pkgs"
+          printf '::set-output name=packages::'
+          tr '\n' ' ' <build-requires.txt
         timeout-minutes: 1
       - name: Install Cygwin build requirements
         uses: cygwin/cygwin-install-action@ad81540ad7c2726e17c08401fbeca6380cc7f463
         with:
           platform: ${{ matrix.platform }}
           packages: ${{ steps.cyg-package-list.outputs.packages }}
-          install-dir: 'C:\tools\cygwin'
         timeout-minutes: 30
       - name: Generate cygcheck output
-        run: |
-          C:\tools\cygwin\bin\bash.exe -c 'cygcheck -srv >/var/log/cygcheck.out'
         if: always()
+        run: cygcheck -srv >/var/log/cygcheck.out
         timeout-minutes: 5
       - name: Store Cygwin logs
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: cygwin-logs-${{ matrix.platform }}
-          path: 'C:\tools\cygwin\var\log\'
-        if: always()
+          path: 'C:\cygwin\var\log\'
         timeout-minutes: 5
       - name: Cygport download
-        run: |
-          C:\tools\cygwin\bin\bash.exe -c 'cygport git.cygport download'
+        run: cygport git.cygport download
         timeout-minutes: 5
       - name: Cygport prep
-        run: |
-          C:\tools\cygwin\bin\bash.exe -c 'cygport git.cygport prep'
+        run: cygport git.cygport prep
         timeout-minutes: 1
       - name: Cygport compile
-        run: |
-          C:\tools\cygwin\bin\bash.exe -c 'cygport git.cygport compile'
+        run: cygport git.cygport compile
         timeout-minutes: 30
       - name: Cygport test
-        run: |
-          C:\tools\cygwin\bin\bash.exe -c 'cygport git.cygport test'
+        run: cygport git.cygport test
         timeout-minutes: 300
       - name: Cygport install
-        run: |
-          C:\tools\cygwin\bin\bash.exe -c 'cygport git.cygport install'
+        run: cygport git.cygport install
         timeout-minutes: 30
       - name: Cygport package
-        run: |
-          C:\tools\cygwin\bin\bash.exe -c 'cygport git.cygport package'
+        run: cygport git.cygport package
         timeout-minutes: 5
       - name: Cygport upload
+        if: startsWith(github.ref, 'refs/tags/v')
         env:
           MAINTAINER_KEY: ${{ secrets.MAINTAINER_KEY }}
         run: |
-          C:\tools\cygwin\bin\bash.exe -c 'umask 0077 && mkdir -p ~/.ssh'
-          C:\tools\cygwin\bin\bash.exe -c 'umask 0077 && echo ""$MAINTAINER_KEY"" >~/.ssh/id_rsa'
-          C:\tools\cygwin\bin\bash.exe -c 'umask 0077 && echo ""cygwin.com,8.43.85.97 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGqrxexIuyqmCVe33p1HuhUFzsXte5QZKb+BJlsRrvXOpUOJEW2S0kszyAiymeV7AXaYmHDKVRJpGVR+0ua0Xww="" >~/.ssh/known_hosts'
-          C:\tools\cygwin\bin\bash.exe -c 'SSH_KEY=~/.ssh/id_rsa cygport git.cygport upload'
-        if: startsWith(github.ref, 'refs/tags/v')
+          umask 0077
+          mkdir -p ~/.ssh
+          echo "$MAINTAINER_KEY" >~/.ssh/id_rsa
+          echo 'cygwin.com,8.43.85.97 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGqrxexIuyqmCVe33p1HuhUFzsXte5QZKb+BJlsRrvXOpUOJEW2S0kszyAiymeV7AXaYmHDKVRJpGVR+0ua0Xww=' >~/.ssh/known_hosts
+          SSH_KEY=~/.ssh/id_rsa cygport git.cygport upload
         timeout-minutes: 5
       - name: Tar up build results
-        run: |
-          C:\tools\cygwin\bin\bash.exe -c 'tar -caf git-${{ matrix.platform }}.txz git-*-*.*/'
         if: always()
+        run: tar -caf git-${{ matrix.platform }}.txz git-*-*.*/
         timeout-minutes: 10
       - name: Store build results
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: build-results-${{ matrix.platform }}
-          path: |
-            git-${{ matrix.platform }}.txz
+          path: git-${{ matrix.platform }}.txz
           if-no-files-found: error
-        if: always()
         timeout-minutes: 5
