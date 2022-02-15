@@ -36,15 +36,15 @@ jobs:
           install-dir: 'C:\tools\cygwin'
         timeout-minutes: 30
       - name: Generate cygcheck output
-        run: cygcheck -srv >/var/log/cygcheck.out
         if: always()
+        run: cygcheck -srv >/var/log/cygcheck.out
         timeout-minutes: 5
       - name: Store Cygwin logs
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: cygwin-logs-${{ matrix.platform }}
           path: 'C:\tools\cygwin\var\log\'
-        if: always()
         timeout-minutes: 5
       - name: Cygport download
         run: cygport git.cygport download
@@ -65,6 +65,7 @@ jobs:
         run: cygport git.cygport package
         timeout-minutes: 5
       - name: Cygport upload
+        if: startsWith(github.ref, 'refs/tags/v')
         env:
           MAINTAINER_KEY: ${{ secrets.MAINTAINER_KEY }}
         run: |
@@ -73,17 +74,16 @@ jobs:
           echo "$MAINTAINER_KEY" >~/.ssh/id_rsa
           echo 'cygwin.com,8.43.85.97 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGqrxexIuyqmCVe33p1HuhUFzsXte5QZKb+BJlsRrvXOpUOJEW2S0kszyAiymeV7AXaYmHDKVRJpGVR+0ua0Xww=' >~/.ssh/known_hosts
           SSH_KEY=~/.ssh/id_rsa cygport git.cygport upload
-        if: startsWith(github.ref, 'refs/tags/v')
         timeout-minutes: 5
       - name: Tar up build results
         if: always()
         run: tar -caf git-${{ matrix.platform }}.txz git-*-*.*/
         timeout-minutes: 10
       - name: Store build results
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: build-results-${{ matrix.platform }}
           path: git-${{ matrix.platform }}.txz
           if-no-files-found: error
-        if: always()
         timeout-minutes: 5
