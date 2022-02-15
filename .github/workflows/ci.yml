@@ -10,7 +10,7 @@ jobs:
       run:
         shell: bash --noprofile --norc -e -o pipefail -o igncr {0}
     env:
-      PATH: C:\tools\cygwin\usr\local\bin;C:\tools\cygwin\usr\bin;C:\tools\cygwin\bin
+      PATH: C:\tools\cygwin\bin
     steps:
       - name: Install Cygwin Git
         uses: cygwin/cygwin-install-action@ad81540ad7c2726e17c08401fbeca6380cc7f463
