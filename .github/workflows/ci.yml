@@ -10,14 +10,13 @@ jobs:
       run:
         shell: bash --noprofile --norc -e -o pipefail -o igncr {0}
     env:
-      PATH: C:\tools\cygwin\bin
+      PATH: C:\cygwin\bin
     steps:
       - name: Install Cygwin Git
         uses: cygwin/cygwin-install-action@ad81540ad7c2726e17c08401fbeca6380cc7f463
         with:
           platform: ${{ matrix.platform }}
           packages: git
-          install-dir: 'C:\tools\cygwin'
         timeout-minutes: 10
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,7 +32,6 @@ jobs:
         with:
           platform: ${{ matrix.platform }}
           packages: ${{ steps.cyg-package-list.outputs.packages }}
-          install-dir: 'C:\tools\cygwin'
         timeout-minutes: 30
       - name: Generate cygcheck output
         if: always()
@@ -44,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: cygwin-logs-${{ matrix.platform }}
-          path: 'C:\tools\cygwin\var\log\'
+          path: 'C:\cygwin\var\log\'
         timeout-minutes: 5
       - name: Cygport download
         run: cygport git.cygport download
