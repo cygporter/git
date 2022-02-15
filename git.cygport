@@ -189,7 +189,6 @@ src_test() {
 	# likely that that's the case now other tests aren't running at the
 	# same time.
 	if (( $(($(stat -f --format="%a*%S" .) / 1024 / 1024 / 1024)) > 10 )); then
-		echo ${B}/t/t7900-*.sh
 		( cd ${B}/t && echo t7900-*.sh && ./t7900-*.sh --tee -l; ) || rc="$?"
 	else
 		echo 'Skipping t7900 due to lack of disk space'
