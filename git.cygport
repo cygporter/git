@@ -168,17 +168,11 @@ src_test() {
 	main_run_skip_tests+=('t7900')
 
 	# Return code.  Set to zero now, it'll be set to non-zero by any test
-	# that fails.
+	# that fails.  We want to know about all failures, but we also want to
+	# run later tests even if earlier ones fail.
 	rc=0
 
-	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${main_run_skip_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" cygtest || rc=$?
-
-	# Check the test results by checking the recorded return codes, since
-	# the previous command seems to always succeed.  In fact, if all the
-	# tests succeeded, the grep will error out as the make command called
-	# by cygtest will automatically clean up the results directory, but
-	# that also means rc remains set to 0.
-	grep -v 0 "${B}"/t/test-results/*.exit && rc=1
+	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${main_run_skip_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" make -k test || rc=$?
 
 	# Run t0021 if it was skipped earlier.
 	if [[ "$ARCH_x86_64" ]]; then
