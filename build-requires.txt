@@ -14,7 +14,7 @@ libcurl-devel
 libexpat-devel
 libiconv
 libiconv-devel
-libpcre-devel
+libpcre2-devel
 libssl-devel
 perl-Authen-SASL
 perl-DBD-SQLite
