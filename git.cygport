@@ -70,6 +70,10 @@ src_compile() {
 	# Disable CPAN fallbacks in favour of Cygwin-packaged Perl modules.
 	export NO_PERL_CPAN_FALLBACKS=YesPlease
 
+	# Look for the AsciiDoc dblatex files in the right place.
+	dblatex_path="$(python3 -c 'import asciidoc; print(asciidoc.__path__[0])')/resources/dblatex"
+	MAKEOPTS+=" ASCIIDOC_DBLATEX_DIR=${dblatex_path}"
+
 	# Avoid warnings about Parserdetails.ini.
 	found_parserdetails=
 	while read -d $'\0' -r perlpath; do
