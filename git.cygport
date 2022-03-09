@@ -139,6 +139,9 @@ src_test() {
 			t5500.{145,148,164,165,242,245,261,262,339,342,358,359}
 		)
 
+		# https://github.com/me-and/Cygwin-Git/issues/54
+		[[ "$ARCH_x86_64" ]] && known_failures+=(t5562)
+
 		# https://github.com/me-and/Cygwin-Git/issues/43
 		known_failures+=(t5580.6)
 
