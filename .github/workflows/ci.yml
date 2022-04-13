@@ -19,6 +19,9 @@ jobs:
           platform: ${{ matrix.platform }}
           packages: git
         timeout-minutes: 10
+      - name: Configure safe.directory  # Workaround for actions/checkout#760
+        run: git config --global --add safe.directory /cygdrive/d/a/Cygwin-Git/Cygwin-Git
+        timeout-minutes: 1
       - name: Checkout
         uses: actions/checkout@v2
         timeout-minutes: 1
@@ -102,6 +105,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install lftp
         timeout-minutes: 5
+      - name: Configure safe.directory  # Workaround for actions/checkout#760
+        run: git config --global --add safe.directory /home/runner/work/Cygwin-Git/Cygwin-Git
+        timeout-minutes: 1
       - name: Checkout
         uses: actions/checkout@v2
         with:
