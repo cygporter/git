@@ -12,6 +12,7 @@ jobs:
         shell: bash --noprofile --norc -e -o pipefail -o igncr {0}
     env:
       PATH: C:\cygwin\bin
+      HOME: C:\cygwin\home\runneradmin
     steps:
       - name: Install Cygwin Git
         uses: cygwin/cygwin-install-action@v2
