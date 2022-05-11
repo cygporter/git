@@ -12,7 +12,6 @@ jobs:
         shell: bash --noprofile --norc -e -o pipefail -o igncr {0}
     env:
       PATH: C:\cygwin\bin
-      HOME: C:\cygwin\home\runneradmin
     outputs:
       pvr: ${{ steps.cygport-vars.outputs.pvr }}
     steps:
@@ -22,11 +21,13 @@ jobs:
           platform: ${{ matrix.platform }}
           packages: git cygport
         timeout-minutes: 10
-      - name: Configure safe.directory  # Workaround for actions/checkout#760
+      - name: Manually configure safe.directory
         run: git config --global --add safe.directory '*'
         timeout-minutes: 1
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          set-safe-directory: false  # actions/checkout otherwise tries to use the wrong config file, per actions/checkout#767
         timeout-minutes: 1
       - name: Load variables from the cygport file
         id: cygport-vars
@@ -111,11 +112,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install lftp
         timeout-minutes: 5
-      - name: Configure safe.directory  # Workaround for actions/checkout#760
-        run: git config --global --add safe.directory '*'
-        timeout-minutes: 1
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
         timeout-minutes: 1
