@@ -13,12 +13,14 @@ jobs:
     env:
       PATH: C:\cygwin\bin
       HOME: C:\cygwin\home\runneradmin
+    outputs:
+      pvr: ${{ steps.cygport-vars.outputs.pvr }}
     steps:
-      - name: Install Cygwin Git
+      - name: Install Cygwin Git and cygport
         uses: cygwin/cygwin-install-action@v2
         with:
           platform: ${{ matrix.platform }}
-          packages: git
+          packages: git cygport
         timeout-minutes: 10
       - name: Configure safe.directory  # Workaround for actions/checkout#760
         run: git config --global --add safe.directory '*'
@@ -26,17 +28,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         timeout-minutes: 1
-      - name: Load packages to install
-        id: cyg-package-list
+      - name: Load variables from the cygport file
+        id: cygport-vars
         run: |
-          printf '::set-output name=packages::'
-          tr '\n' ' ' <build-requires.txt
+          eval "$(cygport git.cygport vars BUILD_REQUIRES PVR)"
+          printf '::set-output name=packages::%s\n' "$BUILD_REQUIRES"
+          printf '::set-output name=pvr::%s\n' "$PVR"
         timeout-minutes: 1
       - name: Install Cygwin build requirements
         uses: cygwin/cygwin-install-action@v2
         with:
           platform: ${{ matrix.platform }}
-          packages: ${{ steps.cyg-package-list.outputs.packages }}
+          packages: ${{ steps.cygport-vars.outputs.packages }}
         timeout-minutes: 30
       - name: Generate cygcheck output
         if: always()
@@ -100,6 +103,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      PVR: ${{ needs.build-test.outputs.pvr }}
     steps:
       - name: Install lftp
         run: |
@@ -114,12 +119,6 @@ jobs:
         with:
           fetch-depth: 0
         timeout-minutes: 1
-      - name: Compute release name
-        id: release-name
-        run: |
-          eval $(grep -e '^VERSION=' -e '^RELEASE=' git.cygport)
-          printf '::set-output name=release::%s-%s' "$VERSION" "$RELEASE"
-        timeout-minutes: 1
       - name: Download build results
         uses: actions/download-artifact@v2
         timeout-minutes: 5
@@ -129,8 +128,6 @@ jobs:
           tar -xaf build-results-x64/git-x64.txz
         timeout-minutes: 5
       - name: Name release artifacts for the GitHub release
-        env:
-          PVR: ${{ steps.release-name.outputs.release }}
         run: |
           # Delete the source packages from the 32-bit build; we'll only use
           # the ones that were generated from the 64-bit build, since they'll
@@ -152,13 +149,13 @@ jobs:
           GIT_COMMITTER_NAME: ${{ github.actor }}
           GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
         run: |
-          git tag -am 'v${{ steps.release-name.outputs.release }}' 'v${{ steps.release-name.outputs.release }}'
-          git push origin tag 'v${{ steps.release-name.outputs.release }}'
+          git tag -am "v${PVR}" "v${PVR}"
+          git push origin tag "v${PVR}"
         timeout-minutes: 1
       - name: Create a GitHub release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.release-name.outputs.release }}
+          tag_name: v${{ env.PVR }}
           files: |
             git-*/dist/git/*
             git-*/dist/git/*/*
@@ -174,7 +171,7 @@ jobs:
           echo 'cygwin.com,8.43.85.97 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGqrxexIuyqmCVe33p1HuhUFzsXte5QZKb+BJlsRrvXOpUOJEW2S0kszyAiymeV7AXaYmHDKVRJpGVR+0ua0Xww=' >~/.ssh/known_hosts
         timeout-minutes: 1
       - name: Mirror to Cygwin Git repositories
-        run: git push cygwin@cygwin.com:/git/cygwin-packages/git 'v${{ steps.release-name.outputs.release }}'
+        run: git push cygwin@cygwin.com:/git/cygwin-packages/git tag "v${PVR}"
         timeout-minutes: 5
       - name: Release on the Cygwin mirror
         run: >
