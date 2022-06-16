@@ -146,7 +146,7 @@ src_test() {
 		known_failures+=(t5580.6)
 
 		# https://github.com/me-and/Cygwin-Git/issues/46
-		known_failures+=(t5601.{{62..64},66})
+		known_failures+=(t5601.{{64..66},68})
 
 		export GIT_SKIP_TESTS="${known_failures[*]}"
 	fi
