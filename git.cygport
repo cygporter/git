@@ -199,4 +199,4 @@ src_test() {
 	return "$rc"
 }
 
-# vim: set noexpandtab tabstop=8 listchars=tab\:\ \ ,trail\:-,lead\:-:
+# vim: set noexpandtab tabstop=8 listchars=tab\:\ \ ,trail\:-,lead\:-
