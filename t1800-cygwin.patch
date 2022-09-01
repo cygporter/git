@@ -1,0 +1,25 @@
+commit c13f9d87a97b6077cdb2de94df4dd8029f9dc3a7
+Author: Adam Dinwoodie <adam@dinwoodie.org>
+Date:   Thu Sep 1 16:03:46 2022 +0100
+
+    t1800: correct test to handle Cygwin
+
+    The OS-specific code in start_command affects Git for Windows but not Cygwin;
+    Cygwin behaves like general *nix systems for these purposes.  As such, when
+    checking for the error from running a script with a bad shebang, only expect
+    the Windows-style behaviour if the prerequisite MINGW is set, rather than using
+    WINDOWS which is set for both Git for Windows and for Cygwin builds.
+
+diff --git a/t/t1800-hook.sh b/t/t1800-hook.sh
+index 64096adac7..fae8b2faf9 100755
+--- a/t/t1800-hook.sh
++++ b/t/t1800-hook.sh
+@@ -159,7 +159,7 @@ test_expect_success 'git hook run a hook with a bad shebang' '
+ 	# TODO: We should emit the same (or at least a more similar)
+ 	# error on Windows and !Windows. See the OS-specific code in
+ 	# start_command()
+-	if test_have_prereq !WINDOWS
++	if test_have_prereq !MINGW
+ 	then
+ 		cat >expect <<-\EOF
+ 		fatal: cannot run bad-hooks/test-hook: ...
