@@ -23,7 +23,7 @@ SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz
 	 build-requires.txt"
 SRC_DIR="${PN}-v${PV}"
 
-PATCH_URI='1.8.5.2-cygwin.patch t1800-cygwin.patch'
+PATCH_URI='1.8.5.2-cygwin.patch'
 
 BUILD_REQUIRES="$(tr '\n' ' ' <build-requires.txt)"
 
