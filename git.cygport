@@ -22,6 +22,7 @@ HOMEPAGE="https://git-scm.com/"
 SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz
 	 build-requires.txt"
 SRC_DIR="${PN}-v${PV}"
+LICENSE='GPL-2.0-only'
 
 PATCH_URI='1.8.5.2-cygwin.patch'
 
