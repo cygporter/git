@@ -1,11 +1,7 @@
 name: CI
 on: [push, pull_request]
 jobs:
-
   build-test:
-    strategy:
-      matrix:
-        platform: [x64, x86]
     runs-on: windows-latest
     defaults:
       run:
@@ -18,7 +14,6 @@ jobs:
       - name: Install Cygwin Git and cygport
         uses: cygwin/cygwin-install-action@v2
         with:
-          platform: ${{ matrix.platform }}
           packages: git cygport
         timeout-minutes: 10
       - name: Manually configure safe.directory
@@ -39,7 +34,6 @@ jobs:
       - name: Install Cygwin build requirements
         uses: cygwin/cygwin-install-action@v2
         with:
-          platform: ${{ matrix.platform }}
           packages: ${{ steps.cygport-vars.outputs.packages }}
         timeout-minutes: 30
       - name: Generate cygcheck output
@@ -50,7 +44,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: cygwin-logs-${{ matrix.platform }}
+          name: cygwin-logs
           path: 'C:\cygwin\var\log\'
         timeout-minutes: 5
       - name: Cygport download
@@ -81,68 +75,8 @@ jobs:
           echo "$MAINTAINER_KEY" >~/.ssh/id_rsa
           echo 'cygwin.com,8.43.85.97 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGqrxexIuyqmCVe33p1HuhUFzsXte5QZKb+BJlsRrvXOpUOJEW2S0kszyAiymeV7AXaYmHDKVRJpGVR+0ua0Xww=' >~/.ssh/known_hosts
         timeout-minutes: 1
-      - name: Cygport stage
-        if: github.ref == 'refs/heads/main'
-        run: SSH_KEY=~/.ssh/id_rsa cygport git.cygport stage
-        timeout-minutes: 5
-      - name: Tar up build results
-        if: always()
-        run: tar -caf git-${{ matrix.platform }}.txz git-*-*.*/
-        timeout-minutes: 10
-      - name: Store build results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-results-${{ matrix.platform }}
-          path: git-${{ matrix.platform }}.txz
-          if-no-files-found: error
-        timeout-minutes: 5
-
-  release:
-    if: github.ref == 'refs/heads/main'
-    needs: build-test
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    env:
-      PVR: ${{ needs.build-test.outputs.pvr }}
-    steps:
-      - name: Install lftp
-        run: |
-          sudo apt-get update
-          sudo apt-get install lftp
-        timeout-minutes: 5
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-        timeout-minutes: 1
-      - name: Download build results
-        uses: actions/download-artifact@v2
-        timeout-minutes: 5
-      - name: Unpack build results
-        run: |
-          tar -xaf build-results-x86/git-x86.txz
-          tar -xaf build-results-x64/git-x64.txz
-        timeout-minutes: 5
-      - name: Name release artifacts for the GitHub release
-        run: |
-          # Delete the source packages from the 32-bit build; we'll only use
-          # the ones that were generated from the 64-bit build, since they'll
-          # be identical unless something has gone very wrong.
-          rm git-"${PVR}".i686/dist/git/git-"${PVR}"-src.*
-
-          # Rename other files to specify the architecture.
-          for arch in i686 x86_64; do
-            (
-              cd git-"$PVR"."$arch"/dist/git
-              while read -r -d $'\0' file; do
-                mv "$file" "${file/${PVR}./${PVR}.${arch}.}"
-              done < <(find . -type f \! -name '*-src.*' -print0)
-            )
-          done
-        timeout-minutes: 1
       - name: Create release tag
+        if: github.ref == 'refs/heads/main'
         env:
           GIT_COMMITTER_NAME: ${{ github.actor }}
           GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
@@ -151,6 +85,7 @@ jobs:
           git push origin tag "v${PVR}"
         timeout-minutes: 1
       - name: Create a GitHub release
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ env.PVR }}
@@ -159,24 +94,23 @@ jobs:
             git-*/dist/git/*/*
           target_commitish: ${{ github.ref }}
         timeout-minutes: 2
-      - name: Configure SSH
-        env:
-          MAINTAINER_KEY: ${{ secrets.MAINTAINER_KEY }}
-        run: |
-          umask 0077
-          mkdir -p ~/.ssh
-          echo "$MAINTAINER_KEY" >~/.ssh/id_rsa
-          echo 'cygwin.com,8.43.85.97 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGqrxexIuyqmCVe33p1HuhUFzsXte5QZKb+BJlsRrvXOpUOJEW2S0kszyAiymeV7AXaYmHDKVRJpGVR+0ua0Xww=' >~/.ssh/known_hosts
-        timeout-minutes: 1
       - name: Mirror to Cygwin Git repositories
+        if: github.ref == 'refs/heads/main'
         run: git push cygwin@cygwin.com:/git/cygwin-packages/git tag "v${PVR}"
         timeout-minutes: 5
-      - name: Release on the Cygwin mirror
-        run: >
-          lftp -c 'set cmd:fail-exit on;
-                   set cmd:interactive on;
-                   set net:max-retries 1;
-                   open sftp://cygwin:@cygwin.com;
-                   put /dev/null -o /x86/release/git/!ready;
-                   put /dev/null -o /x86_64/release/git/!ready;'
+      - name: Cygport upload
+        if: github.ref == 'refs/heads/main'
+        run: SSH_KEY=~/.ssh/id_rsa cygport git.cygport upload
+        timeout-minutes: 5
+      - name: Tar up build results
+        if: always()
+        run: tar -caf git-build-results.txz git-*-*.*/
+        timeout-minutes: 10
+      - name: Store build results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-results
+          path: git-build-results.txz
+          if-no-files-found: error
         timeout-minutes: 5
