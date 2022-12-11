@@ -91,11 +91,7 @@ src_compile() {
 	lndirs
 	cd ${B}
 	cygconf --with-libpcre
-	cygmake all
-	cygmake html
-	cygmake man
-	cygmake info
-	cygmake pdf
+	cygmake all html man info pdf
 }
 
 src_install() {
