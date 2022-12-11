@@ -1,0 +1,192 @@
+--- a/git-v2.38.2/t/t0021-conversion.sh	2022-12-11 00:32:48.000000000 +0000
++++ b/git-v2.38.2/t/t0021-conversion.sh	2022-12-11 15:24:21.277791700 +0000
+@@ -297,6 +297,7 @@ test_expect_success 'filter that does no
+ 	test_cmp expect actual
+ '
+ 
+-test_expect_success EXPENSIVE 'filter large file' '
++# https://github.com/me-and/Cygwin-Git/issues/52
++test_expect_failure EXPENSIVE 'filter large file' '
+ 	test_config filter.largefile.smudge cat &&
+ 	test_config filter.largefile.clean cat &&
+--- a/git-v2.38.2/t/t0301-credential-cache.sh	2022-12-11 00:32:48.000000000 +0000
++++ b/git-v2.38.2/t/t0301-credential-cache.sh	2022-12-11 13:31:52.820186800 +0000
+@@ -30,7 +30,8 @@ test_atexit 'git credential-cache exit'
+ # test that the daemon works with no special setup
+ helper_test cache
+ 
+-test_expect_success 'socket defaults to ~/.cache/git/credential/socket' '
++# https://github.com/me-and/Cygwin-Git/issues/51
++test_expect_failure 'socket defaults to ~/.cache/git/credential/socket' '
+ 	test_when_finished "
+ 		git credential-cache exit &&
+ 		rmdir -p .cache/git/credential/
+@@ -44,7 +45,8 @@ export XDG_CACHE_HOME
+ # test behavior when XDG_CACHE_HOME is set
+ helper_test cache
+ 
+-test_expect_success "use custom XDG_CACHE_HOME if set and default sockets are not created" '
++# https://github.com/me-and/Cygwin-Git/issues/51
++test_expect_failure "use custom XDG_CACHE_HOME if set and default sockets are not created" '
+ 	test_when_finished "git credential-cache exit" &&
+ 	test_path_is_socket "$XDG_CACHE_HOME/git/credential/socket" &&
+ 	test_path_is_missing "$HOME/.git-credential-cache/socket" &&
+@@ -52,7 +54,8 @@ test_expect_success "use custom XDG_CACH
+ '
+ unset XDG_CACHE_HOME
+ 
+-test_expect_success 'credential-cache --socket option overrides default location' '
++# https://github.com/me-and/Cygwin-Git/issues/51
++test_expect_failure 'credential-cache --socket option overrides default location' '
+ 	test_when_finished "
+ 		git credential-cache exit --socket \"\$HOME/dir/socket\" &&
+ 		rmdir \"\$HOME/dir\"
+@@ -66,7 +69,8 @@ test_expect_success 'credential-cache --
+ 	test_path_is_socket "$HOME/dir/socket"
+ '
+ 
+-test_expect_success "use custom XDG_CACHE_HOME even if xdg socket exists" '
++# https://github.com/me-and/Cygwin-Git/issues/51
++test_expect_failure "use custom XDG_CACHE_HOME even if xdg socket exists" '
+ 	test_when_finished "
+ 		git credential-cache exit &&
+ 		sane_unset XDG_CACHE_HOME
+@@ -89,7 +93,8 @@ test_expect_success "use custom XDG_CACH
+ 	test_path_is_socket "$XDG_CACHE_HOME/git/credential/socket"
+ '
+ 
+-test_expect_success 'use user socket if user directory exists' '
++# https://github.com/me-and/Cygwin-Git/issues/51
++test_expect_failure 'use user socket if user directory exists' '
+ 	test_when_finished "
+ 		git credential-cache exit &&
+ 		rmdir \"\$HOME/.git-credential-cache/\"
+@@ -105,7 +110,8 @@ test_expect_success 'use user socket if
+ 	test_path_is_socket "$HOME/.git-credential-cache/socket"
+ '
+ 
+-test_expect_success SYMLINKS 'use user socket if user directory is a symlink to a directory' '
++# https://github.com/me-and/Cygwin-Git/issues/51
++test_expect_failure SYMLINKS 'use user socket if user directory is a symlink to a directory' '
+ 	test_when_finished "
+ 		git credential-cache exit &&
+ 		rmdir \"\$HOME/dir/\" &&
+--- a/git-v2.38.2/t/t3070-wildmatch.sh	2022-12-11 00:32:48.000000000 +0000
++++ b/git-v2.38.2/t/t3070-wildmatch.sh	2022-12-11 15:08:33.604989200 +0000
+@@ -120,7 +120,18 @@ match_with_ls_files() {
+ 	then
+ 		if test -e .git/created_test_file
+ 		then
+-			test_expect_success EXPENSIVE_ON_WINDOWS "$match_function (via ls-files): match '$pattern' '$text'" "
++			# https://github.com/me-and/Cygwin-Git/issues/42
++			# This is a very rough first attempt to characterise
++			# what will and will not cause faulures; it may be
++			# completely incorrect.
++			if [[ "$pattern" = *\\* ]] && [[ "$pattern" != *\\\\-* ]] && [[ "$pattern" != *\\\\,* ]] && [[ "$pattern" != *\[\\\[* ]] && ! [[ "$pattern" = '[\1-\3]' && "$text" = 3 ]]
++			then
++				local result=failure
++			else
++				local result=success
++			fi
++
++			test_expect_$result EXPENSIVE_ON_WINDOWS "ALPHA $match_function (via ls-files): match '$pattern' '$text'" "
+ 				printf '%s' '$text' >expect &&
+ 				git$ls_files_args ls-files -z -- '$pattern' >actual.raw 2>actual.err &&
+ 				$match_stdout_stderr_cmp
+@@ -132,7 +143,17 @@ match_with_ls_files() {
+ 	then
+ 		if test -e .git/created_test_file
+ 		then
+-			test_expect_success EXPENSIVE_ON_WINDOWS "$match_function (via ls-files): no match '$pattern' '$text'" "
++			# https://github.com/me-and/Cygwin-Git/issues/42
++			# This is a very rough first attempt to characterise
++			# what will and will not cause faulures; it may be
++			# completely incorrect.
++			if [[ "$pattern" = *\\\\* ]]
++			then
++				local result=failure
++			else
++				local result=success
++			fi
++			test_expect_$result EXPENSIVE_ON_WINDOWS "$match_function (via ls-files): no match '$pattern' '$text'" "
+ 				>expect &&
+ 				git$ls_files_args ls-files -z -- '$pattern' >actual.raw 2>actual.err &&
+ 				$match_stdout_stderr_cmp
+--- a/git-v2.38.2/t/t5500-fetch-pack.sh	2022-12-11 00:32:48.000000000 +0000
++++ b/git-v2.38.2/t/t5500-fetch-pack.sh	2022-12-11 15:31:14.023095700 +0000
+@@ -762,7 +762,8 @@ do
+ 	# file with scheme
+ 	for p in file
+ 	do
+-		test_expect_success !MINGW "fetch-pack --diag-url $p://$h/$r" '
++		# https://github.com/me-and/Cygwin-Git/issues/45
++		test_expect_failure !MINGW "fetch-pack --diag-url $p://$h/$r" '
+ 			check_prot_path $p://$h/$r $p "/$r"
+ 		'
+ 		test_expect_success MINGW "fetch-pack --diag-url $p://$h/$r" '
+@@ -772,7 +773,8 @@ do
+ 			check_prot_path $p:///$r $p "/$r"
+ 		'
+ 		# No "/~" -> "~" conversion for file
+-		test_expect_success !MINGW "fetch-pack --diag-url $p://$h/~$r" '
++		# https://github.com/me-and/Cygwin-Git/issues/45
++		test_expect_failure !MINGW "fetch-pack --diag-url $p://$h/~$r" '
+ 			check_prot_path $p://$h/~$r $p "/~$r"
+ 		'
+ 		test_expect_success MINGW "fetch-pack --diag-url $p://$h/~$r" '
+@@ -794,11 +796,19 @@ do
+ 	p=ssh
+ 	for h in host [::1]
+ 	do
+-		test_expect_success "fetch-pack --diag-url $h:$r" '
++		# https://github.com/me-and/Cygwin-Git/issues/45
++		if [[ "$h" = 'host' ]]
++		then
++			local result=success
++		else
++			local result=failure
++		fi
++
++		test_expect_$result "fetch-pack --diag-url $h:$r" '
+ 			check_prot_host_port_path $h:$r $p "$h" NONE "$r"
+ 		'
+ 		# Do "/~" -> "~" conversion
+-		test_expect_success "fetch-pack --diag-url $h:/~$r" '
++		test_expect_$result "fetch-pack --diag-url $h:/~$r" '
+ 			check_prot_host_port_path $h:/~$r $p "$h" NONE "~$r"
+ 		'
+ 	done
+--- a/git-v2.38.2/t/t5580-unc-paths.sh	2022-12-11 00:32:48.000000000 +0000
++++ b/git-v2.38.2/t/t5580-unc-paths.sh	2022-12-11 15:00:52.844936300 +0000
+@@ -61,7 +61,8 @@ test_expect_success fetch '
+ 	)
+ '
+ 
+-test_expect_success push '
++# https://github.com/me-and/Cygwin-Git/issues/43
++test_expect_failure push '
+ 	(
+ 		cd clone &&
+ 		git checkout -b to-push &&
+--- a/git-v2.38.2/t/t5601-clone.sh	2022-12-11 00:32:48.000000000 +0000
++++ b/git-v2.38.2/t/t5601-clone.sh	2022-12-11 15:05:25.695555200 +0000
+@@ -532,7 +532,8 @@ done
+ #ipv6
+ for repo in rep rep/home/project 123
+ do
+-	test_expect_success "clone [::1]:$repo" '
++	# https://github.com/me-and/Cygwin-Git/issues/46
++	test_expect_failure "clone [::1]:$repo" '
+ 		test_clone_url [::1]:$repo ::1 "$repo"
+ 	'
+ done
+@@ -541,7 +542,8 @@ test_expect_success "clone host:/~repo"
+ 	test_clone_url host:/~repo host "~repo"
+ '
+ 
+-test_expect_success "clone [::1]:/~repo" '
++# https://github.com/me-and/Cygwin-Git/issues/46
++test_expect_failure "clone [::1]:/~repo" '
+ 	test_clone_url [::1]:/~repo ::1 "~repo"
+ '
+ 

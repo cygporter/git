@@ -24,7 +24,7 @@ SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz
 SRC_DIR="${PN}-v${PV}"
 LICENSE='GPL-2.0-only'
 
-PATCH_URI='1.8.5.2-cygwin.patch'
+PATCH_URI='1.8.5.2-cygwin.patch expect-cygwin-test-failures.patch'
 
 BUILD_REQUIRES="$(tr '\n' ' ' <build-requires.txt)"
 
@@ -120,34 +120,8 @@ src_test() {
 	if [[ ! -v GIT_SKIP_TESTS ]]; then
 		known_failures=()
 
-		# https://github.com/me-and/Cygwin-Git/issues/47
-		# https://github.com/me-and/Cygwin-Git/issues/52
-		known_failures+=(t0021.12)
-
-		# https://github.com/me-and/Cygwin-Git/issues/51
-		known_failures+=(t0301.{13,{26..30}})
-
-		# https://github.com/me-and/Cygwin-Git/issues/42
-		known_failures+=(
-			t3070.{{114..120..2},{674..680..2},{734..740..2}}
-			t3070.{{744..750..2},{954..960..2},{964..970..2}}
-			t3070.{{974..980..2},{1284..1290..2},{1374..1380..2}}
-			t3070.{{1414..1420..2},{1424..1430..2}}
-		)
-
-		# https://github.com/me-and/Cygwin-Git/issues/45
-		known_failures+=(
-			t5500.{145,148,164,165,242,245,261,262,339,342,358,359}
-		)
-
 		# https://github.com/me-and/Cygwin-Git/issues/54
 		[[ "$ARCH_x86_64" ]] && known_failures+=(t5562)
-
-		# https://github.com/me-and/Cygwin-Git/issues/43
-		known_failures+=(t5580.6)
-
-		# https://github.com/me-and/Cygwin-Git/issues/46
-		known_failures+=(t5601.{{64..66},68})
 
 		export GIT_SKIP_TESTS="${known_failures[*]}"
 	fi
