@@ -91,11 +91,7 @@ src_compile() {
 	lndirs
 	cd ${B}
 	cygconf --with-libpcre
-	cygmake all
-	cygmake html
-	cygmake man
-	cygmake info
-	cygmake pdf
+	cygmake all html man info pdf
 }
 
 src_install() {
@@ -141,7 +137,7 @@ src_test() {
 		)
 
 		# https://github.com/me-and/Cygwin-Git/issues/54
-		[[ "$ARCH_x86_64" ]] && known_failures+=(t5562)
+		known_failures+=(t5562)
 
 		# https://github.com/me-and/Cygwin-Git/issues/43
 		known_failures+=(t5580.6)
@@ -165,11 +161,11 @@ src_test() {
 	# because we may want to try to run them later.
 	main_run_skip_tests=()
 
-	# On 64-bit only, skip t0021, since it seems to hang when run through
-	# prove in GitHub Actions.  Run it later, outside prove, where it
-	# doesn't have that problem.
+	# Skip t0021, since it seems to hang when run through prove in GitHub
+	# Actions.  Run it later, outside prove, where it doesn't have that
+	# problem.
 	# https://github.com/me-and/Cygwin-Git/issues/53
-	[[ "$ARCH_x86_64" ]] && main_run_skip_tests+=('t0021')
+	main_run_skip_tests+=('t0021')
 
 	# Skip t7900 from the main run as it needs a lot of disk space.  If
 	# there's sufficient space later, we can run it then.
@@ -182,10 +178,8 @@ src_test() {
 
 	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${main_run_skip_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" cygtest || rc=$?
 
-	# Run t0021 if it was skipped earlier.
-	if [[ "$ARCH_x86_64" ]]; then
-		( cd ${B}/t && echo t0021-*.sh && ./t0021-*.sh --tee -l; ) || rc="$?"
-	fi
+	# Run t0021 since it was skipped earlier.
+	( cd ${B}/t && echo t0021-*.sh && ./t0021-*.sh --tee -l; ) || rc="$?"
 
 	# Run t7900 if there's at least 10GB free disk space.  It's much more
 	# likely that that's the case now other tests aren't running at the
