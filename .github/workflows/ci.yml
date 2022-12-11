@@ -8,8 +8,6 @@ jobs:
         shell: bash --noprofile --norc -e -o pipefail -o igncr {0}
     env:
       PATH: C:\cygwin\bin
-    outputs:
-      pvr: ${{ steps.cygport-vars.outputs.pvr }}
     steps:
       - name: Install Cygwin Git and cygport
         uses: cygwin/cygwin-install-action@v2
@@ -25,16 +23,15 @@ jobs:
           set-safe-directory: false  # actions/checkout otherwise tries to use the wrong config file, per actions/checkout#767
         timeout-minutes: 1
       - name: Load variables from the cygport file
-        id: cygport-vars
         run: |
           eval "$(cygport git.cygport vars BUILD_REQUIRES PVR)"
-          printf '::set-output name=packages::%s\n' "$BUILD_REQUIRES"
-          printf '::set-output name=pvr::%s\n' "$PVR"
+          printf 'BUILD_REQUIRES=%s\n' "$BUILD_REQUIRES" >>"$GITHUB_ENV"
+          printf 'PVR=%s\n' "$PVR" >>"$GITHUB_ENV"
         timeout-minutes: 1
       - name: Install Cygwin build requirements
         uses: cygwin/cygwin-install-action@v2
         with:
-          packages: ${{ steps.cygport-vars.outputs.packages }}
+          packages: ${{ env.BUILD_REQUIRES }}
         timeout-minutes: 30
       - name: Generate cygcheck output
         if: always()
