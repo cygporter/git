@@ -3,6 +3,8 @@ on: [push, pull_request]
 jobs:
   build-test:
     runs-on: windows-latest
+    permissions:
+      contents: write
     defaults:
       run:
         shell: bash --noprofile --norc -e -o pipefail -o igncr {0}
