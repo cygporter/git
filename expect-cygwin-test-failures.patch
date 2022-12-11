@@ -1,14 +1,3 @@
---- a/git-v2.38.2/t/t0021-conversion.sh	2022-12-11 00:32:48.000000000 +0000
-+++ b/git-v2.38.2/t/t0021-conversion.sh	2022-12-11 15:24:21.277791700 +0000
-@@ -297,6 +297,7 @@ test_expect_success 'filter that does no
- 	test_cmp expect actual
- '
- 
--test_expect_success EXPENSIVE 'filter large file' '
-+# https://github.com/me-and/Cygwin-Git/issues/52
-+test_expect_failure EXPENSIVE 'filter large file' '
- 	test_config filter.largefile.smudge cat &&
- 	test_config filter.largefile.clean cat &&
 --- a/git-v2.38.2/t/t0301-credential-cache.sh	2022-12-11 00:32:48.000000000 +0000
 +++ b/git-v2.38.2/t/t0301-credential-cache.sh	2022-12-11 13:31:52.820186800 +0000
 @@ -30,7 +30,8 @@ test_atexit 'git credential-cache exit'
