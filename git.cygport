@@ -8,7 +8,7 @@
 inherit perl
 
 NAME="git"
-VERSION=2.38.2
+VERSION=2.39.0
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="Distributed version control system"
