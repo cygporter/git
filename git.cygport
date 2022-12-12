@@ -144,7 +144,7 @@ src_test() {
 	# run later tests even if earlier ones fail.
 	rc=0
 
-	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${main_run_skip_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" cygtest || rc=$?
+	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${main_run_skip_tests[*]}" GIT_TEST_OPTS='--tee -l' cygtest || rc=$?
 
 	# Run t7900 if there's at least 10GB free disk space.  It's much more
 	# likely that that's the case now other tests aren't running at the
