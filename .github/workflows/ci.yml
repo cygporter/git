@@ -44,7 +44,7 @@ jobs:
         timeout-minutes: 5
       - name: Store Cygwin logs
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: cygwin-logs
           path: 'C:\cygwin\var\log\'
