@@ -108,7 +108,7 @@ jobs:
         timeout-minutes: 10
       - name: Store build results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-results
           path: git-build-results.txz
