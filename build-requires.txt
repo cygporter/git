@@ -23,7 +23,6 @@ perl-IO-Tty
 perl-MailTools
 perl-Net-SMTP-SSL
 perl-TermReadKey
-perl-Test-Harness
 perl-XML-SAX
 perl-YAML
 pkg-config
