@@ -60,6 +60,28 @@
  	test_when_finished "
  		git credential-cache exit &&
  		rmdir \"\$HOME/dir/\" &&
+--- a/git-v2.42.0/t/t1301-shared-repo.sh	2023-05-16 06:33:41 +0000
++++ b/git-v2.42.0/t/t1301-shared-repo.sh	2023-10-17 09:01:37 +0100
+@@ -74,7 +74,8 @@ test_expect_success 'template can set core.bare but overridden by command line'
+ 	test_path_exists subdir/.git/HEAD
+ '
+ 
+-test_expect_success POSIXPERM 'update-server-info honors core.sharedRepository' '
++# https://github.com/cygporter/git/issues/58
++test_expect_failure POSIXPERM 'update-server-info honors core.sharedRepository' '
+ 	: > a1 &&
+ 	git add a1 &&
+ 	test_tick &&
+@@ -106,7 +107,8 @@ do
+ 	git config core.sharedrepository "$u" &&
+ 	umask 0277 &&
+ 
+-	test_expect_success POSIXPERM "shared = $u ($y) ro" '
++	# https://github.com/cygporter/git/issues/58
++	test_expect_failure POSIXPERM "shared = $u ($y) ro" '
+ 
+ 		rm -f .git/info/refs &&
+ 		git update-server-info &&
 --- a/git-v2.38.2/t/t3070-wildmatch.sh	2022-12-11 00:32:48.000000000 +0000
 +++ b/git-v2.38.2/t/t3070-wildmatch.sh	2022-12-11 15:08:33.604989200 +0000
 @@ -120,7 +120,18 @@ match_with_ls_files() {
