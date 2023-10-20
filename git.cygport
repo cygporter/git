@@ -91,6 +91,11 @@ src_compile() {
 	lndirs
 	cd ${B}
 	cygconf --with-libpcre
+
+	# Make the user manual XML file separately, in an attempt to avoid an
+	# apparent race condition I see intermittently.
+	( cd "${B}/Documentation" && cygmake user-manual.xml )
+
 	cygmake all html man info pdf
 }
 
