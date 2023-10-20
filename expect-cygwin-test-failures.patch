@@ -167,18 +167,57 @@
  			check_prot_host_port_path $h:/~$r $p "$h" NONE "~$r"
  		'
  	done
---- a/git-v2.38.2/t/t5580-unc-paths.sh	2022-12-11 00:32:48.000000000 +0000
-+++ b/git-v2.38.2/t/t5580-unc-paths.sh	2022-12-11 15:00:52.844936300 +0000
-@@ -61,7 +61,8 @@ test_expect_success fetch '
+--- a/git-v2.42.0/t/t5580-unc-paths.sh
++++ b/git-v2.42.0/t/t5580-unc-paths.sh
+@@ -40,28 +40,33 @@ test_expect_success setup '
+ 	test_commit initial
+ '
+ 
+-test_expect_success clone '
++# https://github.com/cygporter/git/issues/59
++test_expect_failure clone '
+ 	git clone "file://$UNCPATH" clone
+ '
+ 
+-test_expect_success 'clone without file://' '
++# https://github.com/cygporter/git/issues/59
++test_expect_failure 'clone without file://' '
+ 	git clone "$UNCPATH" clone-without-file
+ '
+ 
+-test_expect_success 'clone with backslashed path' '
++# https://github.com/cygporter/git/issues/59
++test_expect_failure 'clone with backslashed path' '
+ 	BACKSLASHED="$(echo "$UNCPATH" | tr / \\\\)" &&
+ 	git clone "$BACKSLASHED" backslashed
+ '
+ 
+-test_expect_success fetch '
++# https://github.com/cygporter/git/issues/59
++test_expect_failure fetch '
+ 	git init to-fetch &&
+ 	(
+ 		cd to-fetch &&
+ 		git fetch "$UNCPATH" main
  	)
  '
  
 -test_expect_success push '
-+# https://github.com/me-and/Cygwin-Git/issues/43
++# https://github.com/cygporter/git/issues/43
 +test_expect_failure push '
  	(
  		cd clone &&
  		git checkout -b to-push &&
+@@ -78,7 +83,8 @@ test_expect_success MINGW 'remote nick cannot contain backslashes' '
+ 	test_i18ngrep ! "unable to access" err
+ '
+ 
+-test_expect_success 'unc alternates' '
++# https://github.com/cygporter/git/issues/59
++test_expect_failure 'unc alternates' '
+ 	tree="$(git rev-parse HEAD:)" &&
+ 	mkdir test-unc-alternate &&
+ 	(
 --- a/git-v2.38.2/t/t5601-clone.sh	2022-12-11 00:32:48.000000000 +0000
 +++ b/git-v2.38.2/t/t5601-clone.sh	2022-12-11 15:05:25.695555200 +0000
 @@ -532,7 +532,8 @@ done
