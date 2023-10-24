@@ -1,0 +1,41 @@
+--- a/git-2.42.0/t/t4205-log-pretty-formats.sh
++++ b/git-2.42.0/t/t4205-log-pretty-formats.sh
+@@ -1084,24 +1084,24 @@ test_expect_success 'log --pretty truncation with control chars' '
+ 	test_cmp expect actual
+ '
+ 
+-test_expect_success EXPENSIVE,SIZE_T_IS_64BIT 'log --pretty with huge commit message' '
++test_expect_success EXPENSIVE,SIZE_T_IS_64BIT,!CYGWIN_GITHUB_ACTIONS 'log --pretty with huge commit message' '
+ 	# We only assert that this command does not crash. This needs to be
+ 	# executed with the address sanitizer to demonstrate failure.
+ 	git log -1 --pretty="format:%>(2147483646)%x41%41%>(2147483646)%x41" >/dev/null
+ '
+ 
+-test_expect_success EXPENSIVE,SIZE_T_IS_64BIT 'set up huge commit' '
++test_expect_success EXPENSIVE,SIZE_T_IS_64BIT,!CYGWIN_GITHUB_ACTIONS 'set up huge commit' '
+ 	test-tool genzeros 2147483649 | tr "\000" "1" >expect &&
+ 	huge_commit=$(git commit-tree -F expect HEAD^{tree})
+ '
+ 
+-test_expect_success EXPENSIVE,SIZE_T_IS_64BIT 'log --pretty with huge commit message' '
++test_expect_success EXPENSIVE,SIZE_T_IS_64BIT,!CYGWIN_GITHUB_ACTIONS 'log --pretty with huge commit message' '
+ 	git log -1 --format="%B%<(1)%x30" $huge_commit >actual &&
+ 	echo 0 >>expect &&
+ 	test_cmp expect actual
+ '
+ 
+-test_expect_success EXPENSIVE,SIZE_T_IS_64BIT 'log --pretty with huge commit message does not cause allocation failure' '
++test_expect_success EXPENSIVE,SIZE_T_IS_64BIT,!CYGWIN_GITHUB_ACTIONS 'log --pretty with huge commit message does not cause allocation failure' '
+ 	test_must_fail git log -1 --format="%<(1)%B" $huge_commit 2>error &&
+ 	cat >expect <<-EOF &&
+ 	fatal: number too large to represent as int on this platform: 2147483649
+--- a/git-2.42.0/t/test-lib.sh
++++ b/git-2.42.0/t/test-lib.sh
+@@ -1725,6 +1725,7 @@ case $uname_s in
+ 	test_set_prereq SED_STRIPS_CR
+ 	test_set_prereq GREP_STRIPS_CR
+ 	test_set_prereq WINDOWS
++	test -n "$GITHUB_ACTIONS" && test_set_prereq CYGWIN_GITHUB_ACTIONS
+ 	;;
+ *)
+ 	test_set_prereq POSIXPERM
