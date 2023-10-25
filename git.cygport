@@ -52,7 +52,9 @@ git_cvs_CONTENTS="usr/bin/git-cvs* usr/libexec/git-core/git-cvs*
 git_email_SUMMARY="Email tools for Git version control system"
 git_email_REQUIRES="git perl-MailTools"
 git_email_CONTENTS="usr/libexec/git-core/git-*email*
-	usr/share/doc/git/html/git-*email* usr/share/man/man1/git-*email*"
+	usr/share/doc/git/html/git-*email* usr/share/man/man1/git-*email*
+	usr/share/git-core/templates/hooks/*email*
+	"
 git_gui_SUMMARY="Graphical interface for Git version control system"
 git_gui_REQUIRES="git gitk"
 git_gui_CONTENTS="usr/libexec/git-core/git-gui* usr/share/doc/git/html/git-gui*
