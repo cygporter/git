@@ -1,7 +1,0 @@
-name: CI
-on: [push, pull_request]
-jobs:
-  build-test:
-    uses: cygporter/workflows/.github/workflows/build-test.yml@v1
-    with:
-      cygport_file: git.cygport

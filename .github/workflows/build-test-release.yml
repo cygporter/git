@@ -1,0 +1,26 @@
+name: Build and release
+on: [push, pull_request]
+jobs:
+  build-test:
+    uses: cygporter/workflows/.github/workflows/build-test.yml@v2
+    with:
+      cygport_file: git.cygport
+
+  github-release:
+    if: github.ref == ("refs/heads/v" + ${{ needs.build-test.outputs.pv }})
+    needs: build-test
+    permissions:
+      contents: write
+    uses: cygporter/workflows/.github/workflows/github-release.yml@v2
+    with:
+      tag_name: v${{ needs.build-test.outputs.cygport-pvr }}
+
+  cygwin-release:
+    if: github.ref == ("refs/heads/v" + ${{ needs.build-test.outputs.pv }})
+    needs: [build-test, github-release]
+    uses: cygporter/workflows/.github/workflows/cygwin-release.yml@v2
+    with:
+      cygport_file: git.cygport
+      tag_name: v${{ needs.build-test.outputs.cygport-pvr }}
+    secrets:
+      maintainer_key: ${{ secrets.maintainer_key }}
