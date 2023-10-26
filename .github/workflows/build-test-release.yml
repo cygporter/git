@@ -7,7 +7,7 @@ jobs:
       cygport_file: git.cygport
 
   github-release:
-    if: github.ref == ("refs/heads/v" + ${{ needs.build-test.outputs.pv }})
+    if: github.ref == format('refs/heads/v{0}', needs.build-test.outputs.cygport-pv)
     needs: build-test
     permissions:
       contents: write
@@ -16,7 +16,7 @@ jobs:
       tag_name: v${{ needs.build-test.outputs.cygport-pvr }}
 
   cygwin-release:
-    if: github.ref == ("refs/heads/v" + ${{ needs.build-test.outputs.pv }})
+    if: github.ref == format('refs/heads/v{0}', needs.build-test.outputs.cygport-pv)
     needs: [build-test, github-release]
     uses: cygporter/workflows/.github/workflows/cygwin-release.yml@v2
     with:
