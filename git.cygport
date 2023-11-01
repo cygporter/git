@@ -31,7 +31,7 @@ PATCH_URI='1.8.5.2-cygwin.patch
 BUILD_REQUIRES="$(tr '\n' ' ' <build-requires.txt)"
 
 PKG_NAMES="git gitk gitweb git-cvs git-email git-gui git-p4 git-svn"
-git_REQUIRES="cygutils less openssh rsync"
+git_REQUIRES="cygutils less openssh rsync gettext"
 git_CONTENTS="--exclude=gitk* --exclude=git-cvs* --exclude=git-*email*
 	--exclude=git-gui* --exclude=git-svn* --exclude=SVN* --exclude=Git.SVN.*
 	--exclude=git-instaweb* --exclude=gitweb* --exclude=*p4*
