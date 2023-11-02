@@ -24,9 +24,7 @@ SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz
 SRC_DIR="${PN}-v${PV}"
 LICENSE='GPL-2.0-only'
 
-PATCH_URI='1.8.5.2-cygwin.patch
-	expect-cygwin-test-failures.patch
-	github-actions-memory.patch'
+PATCH_URI='expect-cygwin-test-failures.patch github-actions-memory.patch'
 
 BUILD_REQUIRES="$(tr '\n' ' ' <build-requires.txt)"
 
