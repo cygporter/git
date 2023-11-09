@@ -89,7 +89,9 @@ src_compile() {
 			break
 		fi
 	done < <(perl -e 'print join("\0", @INC) . "\0"')
-	[[ "$found_parserdetails" ]] || perl -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()"
+	if [[ -z "$found_parserdetails" ]]; then
+		perl -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()"
+	fi
 
 	# The configure script is not distributed, and VPATH builds aren't supported
 	cd ${S}
@@ -100,7 +102,10 @@ src_compile() {
 
 	# Make the user manual XML file separately, in an attempt to avoid an
 	# apparent race condition I see intermittently.
-	( cd "${B}/Documentation" && cygmake user-manual.xml )
+	(
+		cd "${B}/Documentation"
+		cygmake user-manual.xml
+	)
 
 	cygmake all html man info pdf
 }
@@ -127,11 +132,9 @@ src_test() {
 			warning "Could not find script ${1@Q}: glob found ${scripts[@]@Q}"
 			return 1
 		fi
-		local rc=0
 		echo "Starting $script"
-		time ./"$script" --tee -l || rc="$?"
-		echo "Finished $script (returning $rc)"
-		return "$rc"
+		time ./"$script" --tee -l
+		echo "Finished $script"
 	)
 
 	# Test t4018 fails if the files in the build directory are left as
@@ -161,7 +164,9 @@ src_test() {
 	# GIT_SKIP_TESTS would override the previous block for skipping known
 	# failures, GIT_SKIP_ADDITIONAL_TESTS will be an addition to the
 	# previous block.
-	[[ -v GIT_SKIP_ADDITIONAL_TESTS ]] && export GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${GIT_SKIP_ADDITIONAL_TESTS}"
+	if [[ -v GIT_SKIP_ADDITIONAL_TESTS ]]; then
+		export GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${GIT_SKIP_ADDITIONAL_TESTS}"
+	fi
 
 	# Create an array of tests to skip for the main run, but which
 	# shouldn't be listed in the GIT_SKIP_TESTS environment variable,
@@ -172,24 +177,17 @@ src_test() {
 	# there's sufficient space later, we can run it then.
 	main_run_skip_tests+=('t7900')
 
-	# Return code.  Set to zero now, it'll be set to non-zero by any test
-	# that fails.  We want to know about all failures, but we also want to
-	# run later tests even if earlier ones fail.
-	rc=0
-
-	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${main_run_skip_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" cygtest || rc=$?
+	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${main_run_skip_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" cygtest
 
 	# Run t7900 if there's at least 10GB free disk space.  It's much more
 	# likely that that's the case now other tests aren't running at the
 	# same time.
 	if (( $(($(stat -f --format="%a*%S" .) / 1024 / 1024 / 1024)) > 10 )); then
-		git_test_single_script t7900 || rc=$?
+		git_test_single_script t7900
 	else
 		warning 'Skipping t7900 due to lack of disk space'
 		rc=1
 	fi
-
-	return "$rc"
 }
 
 # vim: set noexpandtab tabstop=8 listchars=tab\:\ \ ,trail\:-,lead\:-
