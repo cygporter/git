@@ -125,11 +125,13 @@ src_test() {
 
 	# Use a subshell for this function so it can `cd` safely.
 	git_test_single_script () (
+		local script_name="$1"
+		local timeout="$2"
 		local script
 		local -a scripts
 
 		cd "$B/t"
-		scripts=("$1"-*.sh)
+		scripts=("$script_name"-*.sh)
 		if (( "${#scripts[*]}" != 1 )); then
 			warning "Unexpected number of scripts for ${1@Q}: ${#scripts[*]} (${scripts[*]@Q})"
 			return 1
@@ -140,7 +142,13 @@ src_test() {
 			return 1
 		fi
 		echo "Starting $script"
-		time ./"$script" --tee -l
+		if [[ "$timeout" ]]; then
+			echo "Script timeout: $timeout"
+			time timeout -k5m -v "$timeout" ./"$script" --tee -l
+		else
+			echo "Starting $script"
+			time ./"$script" --tee -l
+		fi
 		echo "Finished $script"
 	)
 
@@ -175,14 +183,22 @@ src_test() {
 	# run them later when there's more space available.
 	space_hungry_tests=(t7900)
 
+	# Temporarily redefine make to have a timeout when it gets called by
+	# cygmake, after checking that make *is* currently a file executable
+	# rather than an alias or another function.
+	[[ "$(type -t make)" = file ]]
+	make () { timeout -k5m -v 2h make "$@"; }
+
 	# Run the main tests in parallel.
 	nproc="$(nproc 2>/dev/null)"
 	GIT_SKIP_TESTS="${GIT_SKIP_TESTS:+$GIT_SKIP_TESTS }${space_hungry_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(( nproc + 1 )) --timer" cygtest
+	unset -f make
 
 	# Run the space hungry tests now, when there's (hopefully) more space
 	# available given other tests aren't trying to run at the same time.
 	for t in "${space_hungry_tests[@]}"; do
-		git_test_single_script "$t"
+		df -h .
+		git_test_single_script "$t" 10m
 	done
 
 	# Clean up the environment.
