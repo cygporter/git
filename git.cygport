@@ -70,16 +70,18 @@ git_svn_CONTENTS="usr/libexec/git-core/git-svn usr/share/perl*/Git/SVN*
 
 DEPS_PATH=/usr/libexec/git-core
 
-MAKEOPTS+=" INSTALLDIRS=vendor"
+MAKEOPTS="${MAKEOPTS:+$MAKEOPTS }INSTALLDIRS=vendor"
 DIFF_EXCLUDES='configure GIT-VERSION-FILE random_seed trustdb.gpg'
 
 src_compile() {
+	local dblatex_path found_parserdetails perlpath
+
 	# Disable CPAN fallbacks in favour of Cygwin-packaged Perl modules.
 	export NO_PERL_CPAN_FALLBACKS=YesPlease
 
 	# Look for the AsciiDoc dblatex files in the right place.
 	dblatex_path="$(python3 -c 'import asciidoc; print(asciidoc.__path__[0])')/resources/dblatex"
-	MAKEOPTS+=" ASCIIDOC_DBLATEX_DIR=${dblatex_path}"
+	MAKEOPTS="${MAKEOPTS:+$MAKEOPTS }ASCIIDOC_DBLATEX_DIR=$dblatex_path"
 
 	# Avoid warnings about Parserdetails.ini.
 	found_parserdetails=
@@ -94,42 +96,47 @@ src_compile() {
 	fi
 
 	# The configure script is not distributed, and VPATH builds aren't supported
-	cd ${S}
+	cd "$S"
 	cygmake configure perllibdir="$PERL_VENDORLIB"
 	lndirs
-	cd ${B}
+	cd "$B"
 	cygconf --with-libpcre
 
 	# Make the user manual XML file separately, in an attempt to avoid an
 	# apparent race condition I see intermittently.
-	(
-		cd "${B}/Documentation"
-		cygmake user-manual.xml
-	)
+	cygmake -C Documentation user-manual.xml
 
 	cygmake all html man info pdf
 }
 
 src_install() {
-	cd ${B}
+	cd "$B"
 	cyginstall install-html install-man install-info install-pdf pdfdir=/usr/share/doc/git
 
 	# Ship bash completion
 	insinto "$(pkg-config --variable=completionsdir bash-completion)"
-	newins ${S}/contrib/completion/git-completion.bash git
+	newins "$S"/contrib/completion/git-completion.bash git
 }
 
 src_test() {
+	local t
+	local -i nproc
+	local -a known_failures space_hungry_tests
+
+	# Use a subshell for this function so it can `cd` safely.
 	git_test_single_script () (
-		cd "${B}/t"
-		local scripts=("$1"-*.sh)
-		if (( "${#scripts[@]}" != 1 )); then
-			warning "Unexpected number of scripts for ${1@Q}: ${#scripts[@]} (${scripts[@]@Q})"
+		local script
+		local -a scripts
+
+		cd "$B/t"
+		scripts=("$1"-*.sh)
+		if (( "${#scripts[*]}" != 1 )); then
+			warning "Unexpected number of scripts for ${1@Q}: ${#scripts[*]} (${scripts[*]@Q})"
 			return 1
 		fi
-		local script="${scripts[0]}"
+		script="${scripts[0]}"
 		if ! [[ -x "$script" && -f "$script" ]]; then
-			warning "Could not find script ${1@Q}: glob found ${scripts[@]@Q}"
+			warning "Could not find script ${1@Q}: glob found ${scripts[*]@Q}"
 			return 1
 		fi
 		echo "Starting $script"
@@ -139,22 +146,18 @@ src_test() {
 
 	# Test t4018 fails if the files in the build directory are left as
 	# symlinks rather than being real files.
-	rm ${B}/t/t4018/*
-	cp ${S}/t/t4018/* ${B}/t/t4018
-	cd ${B}
+	rm "$B"/t/t4018/*
+	cp "$S"/t/t4018/* "$B"/t/t4018
+	cd "$B"
 
 	# Unless GIT_SKIP_TESTS is already set, in which case trust the version
 	# that comes from the environment (including if it's the null string),
 	# always skip known failures.
 	if [[ ! -v GIT_SKIP_TESTS ]]; then
-		known_failures=()
-
-		# https://github.com/me-and/Cygwin-Git/issues/54
-		known_failures+=(t5562)
-
-		# https://github.com/cygporter/git/issues/53
-		known_failures+=(t0021.12)
-
+		known_failures=(
+			t0021.12  # https://github.com/cygporter/git/issues/53
+			t5562     # https://github.com/cygporter/git/issues/54
+		)
 		export GIT_SKIP_TESTS="${known_failures[*]}"
 	fi
 
@@ -165,29 +168,25 @@ src_test() {
 	# failures, GIT_SKIP_ADDITIONAL_TESTS will be an addition to the
 	# previous block.
 	if [[ -v GIT_SKIP_ADDITIONAL_TESTS ]]; then
-		export GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${GIT_SKIP_ADDITIONAL_TESTS}"
+		export GIT_SKIP_TESTS="${GIT_SKIP_TESTS:+$GIT_SKIP_TESTS }${GIT_SKIP_ADDITIONAL_TESTS}"
 	fi
 
-	# Create an array of tests to skip for the main run, but which
-	# shouldn't be listed in the GIT_SKIP_TESTS environment variable,
-	# because we may want to try to run them later.
-	main_run_skip_tests=()
+	# Skip tests that need lots of disk space during the main run; we can
+	# run them later when there's more space available.
+	space_hungry_tests=(t7900)
 
-	# Skip t7900 from the main run as it needs a lot of disk space.  If
-	# there's sufficient space later, we can run it then.
-	main_run_skip_tests+=('t7900')
+	# Run the main tests in parallel.
+	nproc="$(nproc 2>/dev/null)"
+	GIT_SKIP_TESTS="${GIT_SKIP_TESTS:+$GIT_SKIP_TESTS }${space_hungry_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(( nproc + 1 )) --timer" cygtest
 
-	GIT_SKIP_TESTS="${GIT_SKIP_TESTS}${GIT_SKIP_TESTS:+ }${main_run_skip_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(($(nproc 2>/dev/null) + 1)) --timer" cygtest
+	# Run the space hungry tests now, when there's (hopefully) more space
+	# available given other tests aren't trying to run at the same time.
+	for t in "${space_hungry_tests[@]}"; do
+		git_test_single_script "$t"
+	done
 
-	# Run t7900 if there's at least 10GB free disk space.  It's much more
-	# likely that that's the case now other tests aren't running at the
-	# same time.
-	if (( $(($(stat -f --format="%a*%S" .) / 1024 / 1024 / 1024)) > 10 )); then
-		git_test_single_script t7900
-	else
-		warning 'Skipping t7900 due to lack of disk space'
-		rc=1
-	fi
+	# Clean up the environment.
+	unset -f git_test_single_script
 }
 
 # vim: set noexpandtab tabstop=8 listchars=tab\:\ \ ,trail\:-,lead\:-
