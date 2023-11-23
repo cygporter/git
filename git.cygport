@@ -179,7 +179,7 @@ src_test() {
 
 	# Skip tests that need lots of disk space during the main run; we can
 	# run them later when there's more space available.
-	space_hungry_tests=(t7900)
+	space_hungry_tests=(t7508 t7900)
 
 	# Temporarily redefine make to have a timeout when it gets called by
 	# cygmake, after checking that make *is* currently a file executable
