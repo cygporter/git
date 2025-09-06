@@ -1,8 +1,8 @@
---- a/git-v2.38.2/t/t0301-credential-cache.sh	2022-12-11 00:32:48.000000000 +0000
-+++ b/git-v2.38.2/t/t0301-credential-cache.sh	2022-12-11 13:31:52.820186800 +0000
-@@ -30,7 +30,8 @@ test_atexit 'git credential-cache exit'
- # test that the daemon works with no special setup
- helper_test cache
+--- a/git-v2.51.0/t/t0301-credential-cache.sh	2022-12-11 00:32:48.000000000 +0000
++++ b/git-v2.51.0/t/t0301-credential-cache.sh	2022-12-11 13:31:52.820186800 +0000
+@@ -42,7 +42,8 @@
+ helper_test_oauth_refresh_token cache
+ helper_test_authtype cache
  
 -test_expect_success 'socket defaults to ~/.cache/git/credential/socket' '
 +# https://github.com/me-and/Cygwin-Git/issues/51
@@ -10,7 +10,7 @@
  	test_when_finished "
  		git credential-cache exit &&
  		rmdir -p .cache/git/credential/
-@@ -44,7 +45,8 @@ export XDG_CACHE_HOME
+@@ -56,7 +57,8 @@
  # test behavior when XDG_CACHE_HOME is set
  helper_test cache
  
@@ -20,7 +20,7 @@
  	test_when_finished "git credential-cache exit" &&
  	test_path_is_socket "$XDG_CACHE_HOME/git/credential/socket" &&
  	test_path_is_missing "$HOME/.git-credential-cache/socket" &&
-@@ -52,7 +54,8 @@ test_expect_success "use custom XDG_CACH
+@@ -64,7 +66,8 @@
  '
  unset XDG_CACHE_HOME
  
@@ -30,7 +30,7 @@
  	test_when_finished "
  		git credential-cache exit --socket \"\$HOME/dir/socket\" &&
  		rmdir \"\$HOME/dir\"
-@@ -66,7 +69,8 @@ test_expect_success 'credential-cache --
+@@ -78,7 +81,8 @@
  	test_path_is_socket "$HOME/dir/socket"
  '
  
@@ -40,7 +40,7 @@
  	test_when_finished "
  		git credential-cache exit &&
  		sane_unset XDG_CACHE_HOME
-@@ -89,7 +93,8 @@ test_expect_success "use custom XDG_CACH
+@@ -101,7 +105,8 @@
  	test_path_is_socket "$XDG_CACHE_HOME/git/credential/socket"
  '
  
@@ -50,7 +50,7 @@
  	test_when_finished "
  		git credential-cache exit &&
  		rmdir \"\$HOME/.git-credential-cache/\"
-@@ -105,7 +110,8 @@ test_expect_success 'use user socket if
+@@ -117,7 +122,8 @@
  	test_path_is_socket "$HOME/.git-credential-cache/socket"
  '
  
@@ -60,31 +60,10 @@
  	test_when_finished "
  		git credential-cache exit &&
  		rmdir \"\$HOME/dir/\" &&
---- a/git-v2.42.0/t/t1301-shared-repo.sh	2023-05-16 06:33:41 +0000
-+++ b/git-v2.42.0/t/t1301-shared-repo.sh	2023-10-17 09:01:37 +0100
-@@ -74,7 +74,8 @@ test_expect_success 'template can set core.bare but overridden by command line'
- 	test_path_exists subdir/.git/HEAD
- '
- 
--test_expect_success POSIXPERM 'update-server-info honors core.sharedRepository' '
-+# https://github.com/cygporter/git/issues/58
-+test_expect_failure POSIXPERM 'update-server-info honors core.sharedRepository' '
- 	: > a1 &&
- 	git add a1 &&
- 	test_tick &&
-@@ -106,7 +107,8 @@ do
- 	git config core.sharedrepository "$u" &&
- 	umask 0277 &&
- 
--	test_expect_success POSIXPERM "shared = $u ($y) ro" '
-+	# https://github.com/cygporter/git/issues/58
-+	test_expect_failure POSIXPERM "shared = $u ($y) ro" '
- 
- 		rm -f .git/info/refs &&
- 		git update-server-info &&
---- a/git-v2.38.2/t/t3070-wildmatch.sh	2022-12-11 00:32:48.000000000 +0000
-+++ b/git-v2.38.2/t/t3070-wildmatch.sh	2022-12-11 15:08:33.604989200 +0000
-@@ -120,7 +120,18 @@ match_with_ls_files() {
+
+--- a/git-v2.51.0/t/t3070-wildmatch.sh	2022-12-11 00:32:48.000000000 +0000
++++ b/git-v2.51.0/t/t3070-wildmatch.sh	2022-12-11 15:08:33.604989200 +0000
+@@ -119,7 +119,18 @@
  	then
  		if test -e .git/created_test_file
  		then
@@ -104,7 +83,7 @@
  				printf '%s' '$text' >expect &&
  				git$ls_files_args ls-files -z -- '$pattern' >actual.raw 2>actual.err &&
  				$match_stdout_stderr_cmp
-@@ -132,7 +143,17 @@ match_with_ls_files() {
+@@ -131,7 +142,17 @@
  	then
  		if test -e .git/created_test_file
  		then
@@ -123,52 +102,9 @@
  				>expect &&
  				git$ls_files_args ls-files -z -- '$pattern' >actual.raw 2>actual.err &&
  				$match_stdout_stderr_cmp
---- a/git-v2.38.2/t/t5500-fetch-pack.sh	2022-12-11 00:32:48.000000000 +0000
-+++ b/git-v2.38.2/t/t5500-fetch-pack.sh	2022-12-11 15:31:14.023095700 +0000
-@@ -762,7 +762,8 @@ do
- 	# file with scheme
- 	for p in file
- 	do
--		test_expect_success !MINGW "fetch-pack --diag-url $p://$h/$r" '
-+		# https://github.com/me-and/Cygwin-Git/issues/45
-+		test_expect_failure !MINGW "fetch-pack --diag-url $p://$h/$r" '
- 			check_prot_path $p://$h/$r $p "/$r"
- 		'
- 		test_expect_success MINGW "fetch-pack --diag-url $p://$h/$r" '
-@@ -772,7 +773,8 @@ do
- 			check_prot_path $p:///$r $p "/$r"
- 		'
- 		# No "/~" -> "~" conversion for file
--		test_expect_success !MINGW "fetch-pack --diag-url $p://$h/~$r" '
-+		# https://github.com/me-and/Cygwin-Git/issues/45
-+		test_expect_failure !MINGW "fetch-pack --diag-url $p://$h/~$r" '
- 			check_prot_path $p://$h/~$r $p "/~$r"
- 		'
- 		test_expect_success MINGW "fetch-pack --diag-url $p://$h/~$r" '
-@@ -794,11 +796,19 @@ do
- 	p=ssh
- 	for h in host [::1]
- 	do
--		test_expect_success "fetch-pack --diag-url $h:$r" '
-+		# https://github.com/me-and/Cygwin-Git/issues/45
-+		if [[ "$h" = 'host' ]]
-+		then
-+			local result=success
-+		else
-+			local result=failure
-+		fi
-+
-+		test_expect_$result "fetch-pack --diag-url $h:$r" '
- 			check_prot_host_port_path $h:$r $p "$h" NONE "$r"
- 		'
- 		# Do "/~" -> "~" conversion
--		test_expect_success "fetch-pack --diag-url $h:/~$r" '
-+		test_expect_$result "fetch-pack --diag-url $h:/~$r" '
- 			check_prot_host_port_path $h:/~$r $p "$h" NONE "~$r"
- 		'
- 	done
---- a/git-v2.42.0/t/t5580-unc-paths.sh
-+++ b/git-v2.42.0/t/t5580-unc-paths.sh
+
+--- a/git-v2.51.0/t/t5580-unc-paths.sh
++++ b/git-v2.51.0/t/t5580-unc-paths.sh
 @@ -40,28 +40,33 @@ test_expect_success setup '
  	test_commit initial
  '
@@ -208,8 +144,7 @@
  	(
  		cd clone &&
  		git checkout -b to-push &&
-@@ -78,7 +83,8 @@ test_expect_success MINGW 'remote nick cannot contain backslashes' '
- 	test_i18ngrep ! "unable to access" err
+@@ -78,6 +83,7 @@ test_expect_success MINGW 'remote nick cannot contain backslashes' '
  '
  
 -test_expect_success 'unc alternates' '
@@ -218,25 +153,4 @@
  	tree="$(git rev-parse HEAD:)" &&
  	mkdir test-unc-alternate &&
  	(
---- a/git-v2.38.2/t/t5601-clone.sh	2022-12-11 00:32:48.000000000 +0000
-+++ b/git-v2.38.2/t/t5601-clone.sh	2022-12-11 15:05:25.695555200 +0000
-@@ -532,7 +532,8 @@ done
- #ipv6
- for repo in rep rep/home/project 123
- do
--	test_expect_success "clone [::1]:$repo" '
-+	# https://github.com/me-and/Cygwin-Git/issues/46
-+	test_expect_failure "clone [::1]:$repo" '
- 		test_clone_url [::1]:$repo ::1 "$repo"
- 	'
- done
-@@ -541,7 +542,8 @@ test_expect_success "clone host:/~repo"
- 	test_clone_url host:/~repo host "~repo"
- '
- 
--test_expect_success "clone [::1]:/~repo" '
-+# https://github.com/me-and/Cygwin-Git/issues/46
-+test_expect_failure "clone [::1]:/~repo" '
- 	test_clone_url [::1]:/~repo ::1 "~repo"
- '
- 
+
