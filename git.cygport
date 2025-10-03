@@ -187,9 +187,11 @@ src_test() {
 	[[ "$(type -t make)" = file ]]
 	make () { timeout -k5m -v 2h make "$@"; }
 
-	# Run the main tests in parallel.
+	# Run the main tests in parallel.  But not too parallel: that seems to
+	# cause intermittent failures.
 	nproc="$(nproc 2>/dev/null)"
-	GIT_SKIP_TESTS="${GIT_SKIP_TESTS:+$GIT_SKIP_TESTS }${space_hungry_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $(( nproc + 1 )) --timer" cygtest
+	jobs="$(( nproc > 8 ? 8 : nproc ))"
+	GIT_SKIP_TESTS="${GIT_SKIP_TESTS:+$GIT_SKIP_TESTS }${space_hungry_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $jobs --timer" cygtest
 	unset -f make
 
 	# Run the space hungry tests now, when there's (hopefully) more space
