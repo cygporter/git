@@ -24,7 +24,13 @@ SRC_URI="https://git.kernel.org/pub/scm/git/git.git/snapshot/${PN}-v${PV}.tar.gz
 SRC_DIR="${PN}-v${PV}"
 LICENSE='GPL-2.0-only'
 
-PATCH_URI='expect-cygwin-test-failures.patch github-actions-memory.patch'
+PATCH_URI='
+	expect-cygwin-test-failures-t0008.diff
+	expect-cygwin-test-failures-t0301.diff
+	expect-cygwin-test-failures-t3070.diff
+	expect-cygwin-test-failures-t5580.diff
+	github-actions-memory.patch
+	'
 
 BUILD_REQUIRES="$(tr '\n' ' ' <build-requires.txt)"
 
@@ -160,10 +166,7 @@ src_test() {
 	# that comes from the environment (including if it's the null string),
 	# always skip known failures.
 	if [[ ! -v GIT_SKIP_TESTS ]]; then
-		known_failures=(
-			t0021.12  # https://github.com/cygporter/git/issues/53
-			t5562     # https://github.com/cygporter/git/issues/54
-		)
+		known_failures=()
 		export GIT_SKIP_TESTS="${known_failures[*]}"
 	fi
 
