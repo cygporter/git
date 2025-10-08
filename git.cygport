@@ -26,7 +26,6 @@ LICENSE='GPL-2.0-only'
 
 PATCH_URI='
 	expect-cygwin-test-failures-t0008.diff
-	expect-cygwin-test-failures-t0301.diff
 	expect-cygwin-test-failures-t3070.diff
 	expect-cygwin-test-failures-t5580.diff
 	github-actions-memory.patch
