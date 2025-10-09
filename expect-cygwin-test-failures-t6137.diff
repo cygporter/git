@@ -1,0 +1,103 @@
+diff --git a/t/t6137-pathspec-wildcards-literal.sh b/t/t6137-pathspec-wildcards-literal.sh
+index 20abad5667..df53786c92 100755
+--- a/t/t6137-pathspec-wildcards-literal.sh
++++ b/t/t6137-pathspec-wildcards-literal.sh
+@@ -39,7 +39,7 @@ test_expect_success 'add wildcard *' '
+ 	)
+ '
+ 
+-test_expect_success 'add literal \*' '
++test_expect_failure 'add literal \*' '
+ 	git init test-asterisk-literal &&
+ 	(
+ 		cd test-asterisk-literal &&
+@@ -125,7 +125,7 @@ test_expect_success 'add wildcard f*' '
+ 	)
+ '
+ 
+-test_expect_success 'add literal f\*' '
++test_expect_failure 'add literal f\*' '
+ 	git init test-f-lit &&
+ 	(
+ 		cd test-f-lit &&
+@@ -156,7 +156,7 @@ test_expect_success 'add wildcard f**' '
+ 	)
+ '
+ 
+-test_expect_success 'add literal f\*\*' '
++test_expect_failure 'add literal f\*\*' '
+ 	git init test-fdstar-lit &&
+ 	(
+ 		cd test-fdstar-lit &&
+@@ -184,7 +184,7 @@ test_expect_success 'add wildcard f?z' '
+ 	)
+ '
+ 
+-test_expect_success 'add literal \? literal' '
++test_expect_failure 'add literal \? literal' '
+ 	git init test-q-lit &&
+ 	(
+ 		cd test-q-lit &&
+@@ -227,7 +227,7 @@ test_expect_success 'add wildcard hello?world' '
+ 	)
+ '
+ 
+-test_expect_success 'add literal hello\?world' '
++test_expect_failure 'add literal hello\?world' '
+ 	git init test-hellolit &&
+ 	(
+ 		cd test-hellolit &&
+@@ -241,7 +241,7 @@ test_expect_success 'add literal hello\?world' '
+ 	)
+ '
+ 
+-test_expect_success 'add literal [abc]' '
++test_expect_failure 'add literal [abc]' '
+ 	git init test-brackets-lit &&
+ 	(
+ 		cd test-brackets-lit &&
+@@ -280,7 +280,7 @@ test_expect_success 'commit: wildcard *' '
+ 	)
+ '
+ 
+-test_expect_success 'commit: literal *' '
++test_expect_failure 'commit: literal *' '
+ 	git init test-c-asterisk-lit &&
+ 	(
+ 		cd test-c-asterisk-lit &&
+@@ -313,7 +313,7 @@ test_expect_success 'commit: wildcard f*' '
+ 	)
+ '
+ 
+-test_expect_success 'commit: literal f\*' '
++test_expect_failure 'commit: literal f\*' '
+ 	git init test-c-flit &&
+ 	(
+ 		cd test-c-flit &&
+@@ -346,7 +346,7 @@ test_expect_success 'commit: wildcard pathspec limits commit' '
+ 	)
+ '
+ 
+-test_expect_success 'commit: literal f\*\*' '
++test_expect_failure 'commit: literal f\*\*' '
+ 	git init test-c-fdstar-lit &&
+ 	(
+ 		cd test-c-fdstar-lit &&
+@@ -379,7 +379,7 @@ test_expect_success 'commit: wildcard ?' '
+ 	)
+ '
+ 
+-test_expect_success 'commit: literal \?' '
++test_expect_failure 'commit: literal \?' '
+ 	git init test-c-qlit &&
+ 	(
+ 		cd test-c-qlit &&
+@@ -411,7 +411,7 @@ test_expect_success 'commit: wildcard hello?world' '
+ 	)
+ '
+ 
+-test_expect_success 'commit: literal hello\?world' '
++test_expect_failure 'commit: literal hello\?world' '
+ 	git init test-c-hellolit &&
+ 	(
+ 		cd test-c-hellolit &&

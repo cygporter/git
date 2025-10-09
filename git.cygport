@@ -28,6 +28,7 @@ PATCH_URI='
 	expect-cygwin-test-failures-t0008.diff
 	expect-cygwin-test-failures-t3070.diff
 	expect-cygwin-test-failures-t5580.diff
+	expect-cygwin-test-failures-t6137.diff
 	github-actions-memory.patch
 	'
 
