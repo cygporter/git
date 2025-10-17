@@ -28,7 +28,7 @@ jobs:
             tee /dev/stderr >> "$GITHUB_OUTPUT"
 
   build-test:
-    uses: cygporter/workflows/.github/workflows/build-test.yml@v2
+    uses: cygporter/workflows/.github/workflows/build-test.yml@catchup
     needs: decide-branches
     strategy:
       matrix:
