@@ -1,10 +1,11 @@
---- a/git-v2.45.0.2-ge7c3d1ddba/t/t0008-ignores.sh
-+++ b/git-v2.45.0.2-ge7c3d1ddba/t/t0008-ignores.sh
-@@ -945,7 +945,7 @@ test_expect_success SYMLINKS 'symlinks not respected in-tree' '
+--- origsrc/git-v2.51.0/t/t0008-ignores.sh	2025-10-17 12:19:55.523534900 +0100
++++ src/git-v2.51.0/t/t0008-ignores.sh	2025-10-17 12:18:09.644299800 +0100
+@@ -944,7 +944,8 @@ test_expect_success SYMLINKS 'symlinks n
  	test_grep "unable to access.*gitignore" err
  '
  
 -test_expect_success EXPENSIVE 'large exclude file ignored in tree' '
++# https://github.com/cygporter/git/issues/62
 +test_expect_failure EXPENSIVE 'large exclude file ignored in tree' '
  	test_when_finished "rm .gitignore" &&
  	dd if=/dev/zero of=.gitignore bs=101M count=1 &&
