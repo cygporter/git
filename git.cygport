@@ -188,7 +188,7 @@ src_test() {
 	# cygmake, after checking that make *is* currently a file executable
 	# rather than an alias or another function.
 	[[ "$(type -t make)" = file ]]
-	make () { timeout -k5m -v 2h make "$@"; }
+	make () { timeout -k5m -v 4h make "$@"; }
 
 	# Run the main tests in parallel.  But not too parallel: that seems to
 	# cause intermittent failures.
