@@ -184,6 +184,8 @@ src_test() {
 	# run them later when there's more space available.
 	space_hungry_tests=(t7508 t7900)
 
+	main_run_skip_extra_tests=(t0610 t1301 t5318)
+
 	# Temporarily redefine make to have a timeout when it gets called by
 	# cygmake, after checking that make *is* currently a file executable
 	# rather than an alias or another function.
@@ -194,13 +196,17 @@ src_test() {
 	# cause intermittent failures.
 	nproc="$(nproc 2>/dev/null)"
 	jobs="$(( nproc > 8 ? 8 : nproc ))"
-	GIT_SKIP_TESTS="${GIT_SKIP_TESTS:+$GIT_SKIP_TESTS }${space_hungry_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $jobs --timer" cygtest
+	GIT_SKIP_TESTS="${GIT_SKIP_TESTS:+$GIT_SKIP_TESTS }${space_hungry_tests[*]} ${main_run_skip_extra_tests[*]}" GIT_TEST_OPTS='--tee -l' DEFAULT_TEST_TARGET=prove GIT_PROVE_OPTS="--jobs $jobs --timer" cygtest
 	unset -f make
 
 	# Run the space hungry tests now, when there's (hopefully) more space
 	# available given other tests aren't trying to run at the same time.
 	for t in "${space_hungry_tests[@]}"; do
 		df -h .
+		git_test_single_script "$t" 10m
+	done
+
+	for t in "${main_run_skip_extra_tests[@]}"; do
 		git_test_single_script "$t" 10m
 	done
 
