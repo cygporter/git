@@ -1,0 +1,10 @@
+--- a/git-2.42.0/t/test-lib.sh
++++ b/git-2.42.0/t/test-lib.sh
+@@ -1725,6 +1725,7 @@ case $uname_s in
+ 	test_set_prereq SED_STRIPS_CR
+ 	test_set_prereq GREP_STRIPS_CR
+ 	test_set_prereq WINDOWS
++	test -n "$GITHUB_ACTIONS" && test_set_prereq CYGWIN_GITHUB_ACTIONS
+ 	;;
+ *)
+ 	test_set_prereq POSIXPERM
