@@ -1,0 +1,32 @@
+--- a/git-2.51.0/t/t1301-shared-repo.sh
++++ b/git-2.51.0/t/t1301-shared-repo.sh
+@@ -62,7 +62,8 @@ test_expect_success 'template cannot set core.bare' '
+ 	test_path_is_missing subdir/HEAD
+ '
+ 
+-test_expect_success POSIXPERM 'update-server-info honors core.sharedRepository' '
++# TODO Add GitHub issue for this failure
++test_expect_cygwin_github_failure POSIXPERM 'update-server-info honors core.sharedRepository' '
+ 	: > a1 &&
+ 	git add a1 &&
+ 	test_tick &&
+@@ -94,7 +95,8 @@ do
+ 	git config core.sharedrepository "$u" &&
+ 	umask 0277 &&
+ 
+-	test_expect_success POSIXPERM "shared = $u ($y) ro" '
++	# TODO Add GitHub issue for this failure
++	test_expect_cygwin_github_failure POSIXPERM "shared = $u ($y) ro" '
+ 
+ 		rm -f .git/info/refs &&
+ 		git update-server-info &&
+@@ -115,7 +117,8 @@ do
+ 
+ done
+ 
+-test_expect_success POSIXPERM 'info/refs respects umask in unshared repo' '
++# TODO Add GitHub issue for this failure
++test_expect_cygwin_github_failure POSIXPERM 'info/refs respects umask in unshared repo' '
+ 	rm -f .git/info/refs &&
+ 	test_unconfig core.sharedrepository &&
+ 	umask 002 &&

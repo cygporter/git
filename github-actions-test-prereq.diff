@@ -8,3 +8,18 @@
  	;;
  *)
  	test_set_prereq POSIXPERM
+--- a/git-2.51.0/t/test-lib-functions.sh
++++ b/git-2.51.0/t/test-lib-functions.sh
+@@ -2061,3 +2061,12 @@ test_trailing_hash () {
+ test_redact_non_printables () {
+     tr -d "\n\r" | tr "[\001-\040][\177-\377]" "."
+ }
++
++test_expect_cygwin_github_failure () {
++	if test_have_prereq CYGWIN_GITHUB_ACTIONS
++	then
++		test_expect_failure "$@"
++	else
++		test_expect_success "$@"
++	fi
++}
